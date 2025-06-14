@@ -12,7 +12,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\Utils;
+namespace Reymon\Utils;
 
 use LengthException;
 
@@ -21,6 +21,8 @@ use LengthException;
  */
 trait Placeholder
 {
+    private ?string $placeholder = null;
+
     /**
      * The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
      */
@@ -28,7 +30,7 @@ trait Placeholder
     {
         $length = \mb_strlen($placeholder);
         if (isset($placeholder) && $length >= 0 && $length <= 64) {
-            $this->option['input_field_placeholder'] = $placeholder;
+            $this->placeholder = $placeholder;
         } elseif ($placeholder != null) {
             throw new LengthException('Maximum length is 64. ' . $length . ' given.');
         }

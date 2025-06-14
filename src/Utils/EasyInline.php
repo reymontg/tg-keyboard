@@ -13,10 +13,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\Utils;
+namespace Reymon\Utils;
 
-use Reymon\EasyKeyboard\InlineButton;
-use Reymon\EasyKeyboard\Keyboard\KeyboardInline;
+use Reymon\InlineButton;
+use Reymon\Keyboard\KeyboardInline;
 
 trait EasyInline
 {
@@ -84,13 +84,13 @@ trait EasyInline
      *
      * @param string  $text        Label text on the button
      * @param string  $url         An HTTPS URL used to automatically authorize the user
-     * @param ?string $fwdText     New text of the button in forwarded messages
+     * @param ?string $forwardText New text of the button in forwarded messages
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public function addLogin(string $text, string $url, ?string $fwdText = null, ?string $username = null, bool $writeAccess = false): KeyboardInline
+    public function addLogin(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): KeyboardInline
     {
-        return $this->addButton(InlineButton::Login($text, $url, $fwdText, $username, $writeAccess));
+        return $this->addButton(InlineButton::Login($text, $url, $forwardText, $username, $writeAccess));
     }
 
     /**
