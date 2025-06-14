@@ -13,18 +13,18 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard;
+namespace Reymon;
 
-use Reymon\EasyKeyboard\KeyboardButton\Location;
-use Reymon\EasyKeyboard\KeyboardButton\Phone;
-use Reymon\EasyKeyboard\KeyboardButton\Poll;
-use Reymon\EasyKeyboard\KeyboardButton\Poll\PollType;
-use Reymon\EasyKeyboard\KeyboardButton\RequestChannel;
-use Reymon\EasyKeyboard\KeyboardButton\RequestGroup;
-use Reymon\EasyKeyboard\KeyboardButton\RequestUsers;
-use Reymon\EasyKeyboard\KeyboardButton\Text;
-use Reymon\EasyKeyboard\KeyboardButton\Webapp;
-use Reymon\EasyKeyboard\Utils\ChatAdminRights;
+use Reymon\KeyboardButton\Location;
+use Reymon\KeyboardButton\Phone;
+use Reymon\KeyboardButton\Poll;
+use Reymon\KeyboardButton\Poll\PollType;
+use Reymon\KeyboardButton\RequestChannel;
+use Reymon\KeyboardButton\RequestGroup;
+use Reymon\KeyboardButton\RequestUsers;
+use Reymon\KeyboardButton\Text;
+use Reymon\KeyboardButton\Webapp;
+use Reymon\Type\Chat\AdministratorRights;
 
 abstract class KeyboardButton extends Button
 {
@@ -100,19 +100,19 @@ abstract class KeyboardButton extends Button
     /**
      * Create button the criteria used to request a suitable group/supergroup. The identifier of the selected chat will be shared with the bot when the corresponding button is pressed.
      *
-     * @param string           $text            Label text on the button
-     * @param int              $buttonId        Signed 32-bit identifier of the request
-     * @param ?bool            $creator         Whether to request a chat owned by the user.
-     * @param ?bool            $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
-     * @param ?bool            $forum           Whether to request a forum (or non-forum) supergroup.
-     * @param ?bool            $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
-     * @param bool             $name            Whether to request the chat's title
-     * @param bool             $username        Whether to request the chat's username
-     * @param bool             $photo           Whether to request the chat's photo
-     * @param ?ChatAdminRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
-     * @param ?ChatAdminRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     * @param string               $text            Label text on the button
+     * @param int                  $buttonId        Signed 32-bit identifier of the request
+     * @param ?bool                $creator         Whether to request a chat owned by the user.
+     * @param ?bool                $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
+     * @param ?bool                $forum           Whether to request a forum (or non-forum) supergroup.
+     * @param ?bool                $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+     * @param bool                 $name            Whether to request the chat's title
+     * @param bool                 $username        Whether to request the chat's username
+     * @param bool                 $photo           Whether to request the chat's photo
+     * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
+     * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      */
-    public static function RequestGroup(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?ChatAdminRights $userAdminRights = null, ?ChatAdminRights $botAdminRights = null): KeyboardButton
+    public static function RequestGroup(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool     $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): KeyboardButton
     {
         return new RequestGroup($text, $buttonId, $creator, $hasUsername, $forum, $member, $name, $username, $photo, $userAdminRights, $botAdminRights);
     }
@@ -120,18 +120,18 @@ abstract class KeyboardButton extends Button
     /**
      * Create button the criteria used to request a suitable channel. The identifier of the selected channel will be shared with the bot when the corresponding button is pressed.
      *
-     * @param string           $text            Label text on the button
-     * @param int              $buttonId        Signed 32-bit identifier of the request
-     * @param ?bool            $creator         Whether to request a chat owned by the user.
-     * @param ?bool            $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
-     * @param ?bool            $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
-     * @param bool             $name            Whether to request the chat's title
-     * @param bool             $username        Whether to request the chat's username
-     * @param bool             $photo           Whether to request the chat's photo
-     * @param ?ChatAdminRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
-     * @param ?ChatAdminRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     * @param string               $text            Label text on the button
+     * @param int                  $buttonId        Signed 32-bit identifier of the request
+     * @param ?bool                $creator         Whether to request a chat owned by the user.
+     * @param ?bool                $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
+     * @param ?bool                $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+     * @param bool                 $name            Whether to request the chat's title
+     * @param bool                 $username        Whether to request the chat's username
+     * @param bool                 $photo           Whether to request the chat's photo
+     * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
+     * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      */
-    public static function RequestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?ChatAdminRights $userAdminRights = null, ?ChatAdminRights $botAdminRights = null): KeyboardButton
+    public static function RequestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): KeyboardButton
     {
         return new RequestChannel($text, $buttonId, $creator, $hasUsername, $member, $name, $username, $photo, $userAdminRights, $botAdminRights);
     }

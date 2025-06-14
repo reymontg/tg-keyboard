@@ -13,18 +13,18 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard;
+namespace Reymon;
 
-use Reymon\EasyKeyboard\InlineButton\Buy;
-use Reymon\EasyKeyboard\InlineButton\CallBack;
-use Reymon\EasyKeyboard\InlineButton\CopyText;
-use Reymon\EasyKeyboard\InlineButton\Game;
-use Reymon\EasyKeyboard\InlineButton\LoginUrl;
-use Reymon\EasyKeyboard\InlineButton\SwitchInline;
-use Reymon\EasyKeyboard\InlineButton\SwitchInlineCurrent;
-use Reymon\EasyKeyboard\InlineButton\SwitchInlineFilter;
-use Reymon\EasyKeyboard\InlineButton\Webapp;
-use Reymon\EasyKeyboard\InlineButton\Url;
+use Reymon\InlineButton\Buy;
+use Reymon\InlineButton\CallBack;
+use Reymon\InlineButton\CopyText;
+use Reymon\InlineButton\Game;
+use Reymon\InlineButton\LoginUrl;
+use Reymon\InlineButton\SwitchInline;
+use Reymon\InlineButton\SwitchInlineCurrent;
+use Reymon\InlineButton\SwitchInlineFilter;
+use Reymon\InlineButton\Webapp;
+use Reymon\InlineButton\Url;
 
 abstract class InlineButton extends Button
 {
@@ -77,13 +77,13 @@ abstract class InlineButton extends Button
      *
      * @param string  $text        Label text on the button
      * @param string  $url         An HTTPS URL used to automatically authorize the user
-     * @param ?string $fwdText     New text of the button in forwarded messages
+     * @param ?string $forwardText New text of the button in forwarded messages
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public static function Login(string $text, string $url, ?string $fwdText = null, ?string $username = null, bool $writeAccess = false): LoginUrl
+    public static function Login(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): LoginUrl
     {
-        return new LoginUrl($text, $url, $fwdText, $username, $writeAccess);
+        return new LoginUrl($text, $url, $forwardText, $username, $writeAccess);
     }
 
     /**

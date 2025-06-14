@@ -13,11 +13,11 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard;
+namespace Reymon;
 
-use JsonSerializable;
+use Reymon\Mtproto\Type;
 
-abstract class Button implements JsonSerializable
+abstract class Button implements Type
 {
     /**
      * @param string $text Label text on the button
@@ -37,11 +37,24 @@ abstract class Button implements JsonSerializable
         return $this->text;
     }
 
+    #[\Override]
+    public function toApi(): array
+    {
+        return ['text' => $this->text];
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return ['text' => $this->text];
+    }
+
     /**
      * @internal
      */
+    #[\Override]
     public function jsonSerialize(): array
     {
-        return ['text' => $this->text];
+        return $this->toApi();
     }
 }
