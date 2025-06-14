@@ -28,7 +28,7 @@ final class KeyboardInline extends Keyboard
     #[\Override]
     public function toApi(): array
     {
-        return ['inline_keyboard' => $this->getButtons()];
+        return ['inline_keyboard' => parent::toApi()];
     }
 
     #[\Override]
@@ -36,7 +36,7 @@ final class KeyboardInline extends Keyboard
     {
         return [
             '_'    => 'replyInlineMarkup',
-            'rows' => $this->getButtons(),
+            'rows' => parent::toMtproto(),
         ];
     }
 
