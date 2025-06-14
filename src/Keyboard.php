@@ -13,63 +13,143 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard;
+namespace Reymon;
 
-use OutOfBoundsException;
+use Reymon\Mtproto\Type;
+use Reymon\Keyboard\KeyboardInline;
 use RangeException;
-use Reymon\EasyKeyboard\Keyboard\KeyboardInline;
+use OutOfBoundsException;
 
 /**
- * @implements \IteratorAggregate<Row>
+ * @implements \IteratorAggregate<list<Button>>
  */
-abstract class Keyboard implements \JsonSerializable, \Countable, \IteratorAggregate
+abstract class Keyboard implements Type, \IteratorAggregate
 {
-    private int $currentRowIndex = 0;
-
-    protected array $data = [];
-    protected array $option = [];
+    private int $index = 0;
 
     /**
-     * Create new easy-keyboard.
+     * @var list<list<Button>>
+     */
+    private array $rows = [];
+
+    /**
+     * Create new tg-keyboard.
      */
     public static function new(): static
     {
         return new static;
     }
 
+    private function getRows(): array
+    {
+        $rows = $this->rows;
+        if (empty($rows[$this->index])) {
+            unset($rows[$this->index]);
+        }
+        return $rows;
+    }
+
+
     /**
-     * @internal
+     * Add button(s) to keyboard.
      */
-    public function getIterator(): \Traversable
+    public function addButton(Button ...$button): self
     {
-        $keyboard = &$this->data;
-        if (($keyboard[$this->currentRowIndex] ?? null)?->isEmpty()) {
-            unset($keyboard[$this->currentRowIndex]);
+        $row = &$this->rows[$this->index];
+        $row = \array_merge($row, $button);
+        return $this;
+    }
+
+    /**
+     * To add a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
+     *
+     */
+    public function addToCoordinates(int $row, int $column, Button ...$button): self
+    {
+        \array_splice($this->rows[$row], $column, 0, $button);
+        return $this;
+    }
+
+    /**
+     * To replace a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
+     *
+     * @throws OutOfBoundsException
+     */
+    public function replaceIntoCoordinates(int $row, int $column, Button ...$button): self
+    {
+        if (\array_key_exists($row, $this->rows) && \array_key_exists($column, $this->rows[$row])) {
+            \array_splice($this->rows[$row], $column, \count($button), $button);
+            return $this;
         }
-        yield from $this->data;
+        throw new OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
     }
 
-    public function item(int $row): ?Row
+    /**
+     * To remove button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
+     *
+     * @throws OutOfBoundsException
+     */
+    public function removeFromCoordinates(int $row, int $column, int $count = 1): self
     {
-        if (isset($this->data[$row]) && !empty($this->data[$row])) {
-            return $this->data[$row];
+        if (\array_key_exists($row, $this->rows) && \array_key_exists($column, $this->rows[$row])) {
+            \array_splice($this->rows[$row], $column, $count);
+            $currentRow = $this->rows[$row];
+            if (\count($currentRow) == 0) {
+                \array_splice($this->rows, $row, 1);
+            }
+            return $this;
         }
-        return null;
+        throw new OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
     }
 
-    public function first(): ?Row
+    /**
+     * Remove the last button from keyboard.
+     *
+     * @throws RangeException
+     */
+    public function remove(): self
     {
-        return $this->item(0);
+        if (!empty($rows = $this->rows) && !empty($endButtons = \end($rows))) {
+            $endRow    = \array_keys($rows);
+            $endButton = \array_keys($endButtons);
+
+            if (\count($endButtons) == 1) {
+                unset($this->rows[\end($endRow)]);
+            }
+            unset($this->rows[\end($endRow)][\end($endButton)]);
+            return $this;
+        }
+        throw new RangeException("Keyboard array is already empty!");
     }
 
-    public function last(): ?Row
+    /**
+     * Add a new raw with specified button ( pass null to only add new row).
+     *
+     */
+    public function row(?Button ...$button): self
     {
-        return $this->item($this->currentRowIndex - 1);
+        $row = &$this->rows[$this->index];
+
+        if (!empty($row)) {
+            $this->rows = [];
+            $this->index++;
+        }
+
+        if (!empty($button)) {
+            $this->addButton(... $button);
+            $this->row();
+        }
+
+        return $this;
     }
 
-    public function count(): int
+    /**
+     * Add specified buttons to keyboard (each button will add to new row).
+     */
+    public function stack(?Button ...$button): self
     {
-        return $this->currentRowIndex;
+        \array_map($this->row(...), $button);
+        return $this;
     }
 
     /**
@@ -118,135 +198,46 @@ abstract class Keyboard implements \JsonSerializable, \Countable, \IteratorAggre
         return $keyboard;
     }
 
-    /**
-     * Add button(s) to keyboard.
-     *
-     */
-    public function addButton(Button ...$buttons): self
+    #[\Override]
+    public function toApi(): array
     {
-        $row = &$this->data[$this->currentRowIndex];
-        $row ??=  new Row();
-        $row->addButton(...$buttons);
-        return $this;
+        $rows = $this->getRows();
+        return \array_map(
+            fn (array $buttons) => \array_map(
+                fn (Button $button): array => $button->toApi(),
+                $buttons
+            ),
+            $rows
+        );
     }
 
-    /**
-     * To add a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
-     *
-     */
-    public function addToCoordinates(int $row, int $column, Button ...$buttons): self
+    #[\Override]
+    public function toMtproto(): array
     {
-        \array_splice($this->data[$row], $column, 0, $buttons);
-        return $this;
-    }
-
-    /**
-     * To replace a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
-     *
-     * @throws OutOfBoundsException
-     */
-    public function replaceIntoCoordinates(int $row, int $column, Button ...$buttons): self
-    {
-        if (\array_key_exists($row, $this->data) && \array_key_exists($column, $this->data[$row])) {
-            \array_splice($this->data[$row], $column, \count($buttons), $buttons);
-            return $this;
-        }
-        throw new OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
-    }
-
-    /**
-     * To remove button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
-     *
-     * @throws OutOfBoundsException
-     */
-    public function removeFromCoordinates(int $row, int $column, int $count = 1): self
-    {
-        if (\array_key_exists($row, $this->data) && \array_key_exists($column, $this->data[$row])) {
-            \array_splice($this->data[$row], $column, $count);
-            $currentRow = $this->data[$row];
-            if (\count($currentRow) == 0) {
-                \array_splice($this->data, $row, 1);
-            }
-            return $this;
-        }
-        throw new OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
-    }
-
-    /**
-     * Remove the last button from keyboard.
-     *
-     * @throws RangeException
-     */
-    public function remove(): self
-    {
-        if (!empty($rows = $this->data) && !empty($endButtons = \end($rows))) {
-            $endRow    = \array_keys($rows);
-            $endButton = \array_keys($endButtons);
-
-            if (\count($endButtons) == 1) {
-                unset($this->data[\end($endRow)]);
-            }
-            unset($this->data[\end($endRow)][\end($endButton)]);
-            return $this;
-        }
-        throw new RangeException("Keyboard array is already empty!");
-    }
-
-    /**
-     * Add a new raw with specified button ( pass null to only add new row).
-     *
-     */
-    public function row(?Button ...$button): self
-    {
-        $row = &$this->data[$this->currentRowIndex];
-        $row ??= new Row();
-
-        if (!$row->isEmpty()) {
-            $this->data[] = new Row();
-            $this->currentRowIndex++;
-        }
-
-        if (!empty($button)) {
-            $this->addButton(... $button);
-            $this->row();
-        }
-
-        // $keyboard = &$this->data;
-        // $current  = &$keyboard[$this->currentRowIndex] ?? false;
-
-        // // Last row is not empty, add new row
-        // if (!$current?->isEmpty()) {
-        //     $keyboard[] = new Row();
-        //     $this->currentRowIndex++;
-        // }
-
-        // if (!empty($button)) {
-        //     $this->addButton(... $button);
-        //     $this->row();
-        // }
-
-        return $this;
-    }
-
-    /**
-     * Add specified buttons to keyboard (each button will add to new row).
-     *
-     */
-    public function Stack(?Button ...$button): self
-    {
-        \array_map($this->row(...), $button);
-        return $this;
+        $rows = $this->getRows();
+        return \array_map(
+            fn (array $buttons) => [
+                '_' => 'keyboardButtonRow',
+                'buttons' => \array_map(
+                    fn (Button $button): array => $button->toApi(),
+                    $buttons
+                )
+            ],
+            $rows
+        );
     }
 
     /**
      * @internal
      */
-    public function jsonSerialize(): array
+    public function getIterator(): \Traversable
     {
-        $keyboard = &$this->data;
-        if (($keyboard[$this->currentRowIndex] ?? null)?->isEmpty()) {
-            unset($keyboard[$this->currentRowIndex]);
+        $rows = $this->getRows();
+
+        foreach ($rows as $row) {
+            foreach ($row as $button) {
+                yield $button;
+            }
         }
-        return $this->option;
     }
 }

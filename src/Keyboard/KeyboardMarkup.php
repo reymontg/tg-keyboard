@@ -53,7 +53,7 @@ final class KeyboardMarkup extends Keyboard
     public function toApi(): array
     {
         return array_filter_null([
-            'keyboard' => $this->getButtons(),
+            'keyboard'          => parent::toApi(),
             'is_persistent'     => $this->alwaysShow,
             'resize_keyboard'   => $this->resize,
             'one_time_keyboard' => $this->singleUse,
@@ -65,7 +65,7 @@ final class KeyboardMarkup extends Keyboard
     {
         return array_filter_null([
             '_' => 'replyKeyboardMarkup',
-            'rows'        => $this->getButtons(),
+            'rows'        => parent::toMtproto(),
             'resize'      => $this->resize,
             'single_use'  => $this->singleUse,
             'selective'   => $this->selective,

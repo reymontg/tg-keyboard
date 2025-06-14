@@ -29,7 +29,7 @@ final class KeyboardForceReply extends Keyboard
 {
     use Selective, Placeholder, SingleUse;
 
-    public function addButton(Button ...$buttons): Keyboard
+    public function addButton(Button ...$button): Keyboard
     {
         throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
     }

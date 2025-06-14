@@ -27,7 +27,7 @@ final class KeyboardHide extends Keyboard
 {
     use Selective;
 
-    public function addButton(Button ...$buttons): Keyboard
+    public function addButton(Button ...$button): Keyboard
     {
         throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
     }
