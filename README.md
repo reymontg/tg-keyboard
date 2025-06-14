@@ -1,5 +1,5 @@
-# EasyKeyboard
-An easy keyboard builder for Telegram Api syntax
+# tg-keyboard
+A keyboard builder for Telegram Api & Mtproto syntax
 <div id="top"></div>
 
 <!-- TABLE OF CONTENTS -->
@@ -23,7 +23,12 @@ An easy keyboard builder for Telegram Api syntax
             </li>
             <li><a href="#keyboardforcereply-and-keyboardhide">KeyboardForceReply and KeyboardHide</a></li>
             <li><a href="#keyboard-peer-type">Keyboard Peer Type</a></li>
-            <li><a href="#convert-telegram-keyboard-to-easy-keyboard">Convert Telegram Keyboard To Easy Keyboard</a></li>
+            <li><a href="#convert-keyboards">Convert To Api & Mtproto Keyboard (and the opposite)</a>
+                <ol>
+                    <li><a href="#telegram-api">Telegram API</a></li>
+                    <li><a href="#mtproto">Mtproto</a></li>
+                </ol>
+            </li>
         </ol>
     </li>
   </ol>
@@ -34,7 +39,7 @@ An easy keyboard builder for Telegram Api syntax
 Install the package using composer:
 
 ```shell
-composer require reymon/easy-keyboard
+composer require reymon/tg-keyboard
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -46,14 +51,10 @@ If you need to create a keyboard you can use the classes provided by this packag
 This is best explained with an example:
 
 ```php
-$this->sendMessage(
-    peer   : 12345,
-    message: 'Keyboard Example',
-    replyMarkup:  KeyboardMarkup::new()
+KeyboardMarkup::new()
         ->singleUse()
         ->addButton(KeyboardButton::Text('Cancel'))
-        ->addButton(KeyboardButton::Text('OK'))
-);
+        ->addButton(KeyboardButton::Text('OK'));
 ```
 
 A ReplyKeyboardMarkup is created by calling the static `new()` method on `KeyboardMarkup`. After that every field,
@@ -81,13 +82,17 @@ KeyboardMarkup::new()
 The Buttons are created in the different way:
 
 ```php
-KeyboardButton::Phone('Send my Contact');
+$button = KeyboardButton::Phone('Send my Contact');
+$button->getText();
+$button->setText('Give me contact');
 ```
 
 This is done the same way for `InlineButton`:
 
 ```php
-InlineButton::Url('hello','https://example.com');
+$button = InlineButton::Url('hello','https://example.com');
+$button->getUrl();
+$button->setUrl('github.com');
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -112,13 +117,13 @@ If you need more than one row, call `row()` multiple times:
 ```php
 KeyboardInline::new()
     ->row(
-        InlineButton::Callback('1','page-1'),
-        InlineButton::Callback('2','page-2'),
-        InlineButton::Callback('3','page-3')
+        InlineButton::Callback('1', 'page-1'),
+        InlineButton::Callback('2', 'page-2'),
+        InlineButton::Callback('3', 'page-3')
     )
     ->row(
-        InlineButton::Callback('prev','page-prev'),
-        InlineButton::Callback('next','page-next')
+        InlineButton::Callback('prev', 'page-prev'),
+        InlineButton::Callback('next', 'page-next')
     );
 ```
 You can add array of callbacks or texts keyboard in another way!
@@ -144,28 +149,28 @@ You can even use these methods
 
 for InlineKeyboard:
 
-* [addCallback](src/Tools/EasyInline.php#L29)
-* [addCallbacks](src/Tools/EasyInline.php#L39)
-* [addWebApp](src/Tools/EasyInline.php#L55)
-* [addUrl](src/Tools/EasyInline.php#L66)
-* [addGame](src/Tools/EasyInline.php#L76)
-* [addBuy](src/Tools/EasyInline.php#L86)
-* [addSwitchInline](src/Tools/EasyInline.php#L98)
+* [addCallback](src/Utils/EasyInline.php#L29)
+* [addCallbacks](src/Utils/EasyInline.php#L39)
+* [addWebApp](src/Utils/EasyInline.php#L55)
+* [addUrl](src/Utils/EasyInline.php#L66)
+* [addGame](src/Utils/EasyInline.php#L76)
+* [addBuy](src/Utils/EasyInline.php#L86)
+* [addSwitchInline](src/Utils/EasyInline.php#L98)
   
 and for ReplyKeyboard:
 
-* [addText](src/Tools/EasyMarkup.php#L28)
-* [addTexts](src/Tools/EasyMarkup.php#L38)
-* [addProfile](src/Tools/EasyMarkup.php#L48)
-* [addWebApp](src/Tools/EasyMarkup.php#L59)
-* [requestPoll](src/Tools/EasyMarkup.php#L69)
-* [requestPollQuiz](src/Tools/EasyMarkup.php#L79)
-* [requestPollRegular](src/Tools/EasyMarkup.php#L89)
-* [requestLocation](src/Tools/EasyMarkup.php#L99)
-* [requestPhone](src/Tools/EasyMarkup.php#L109)
-* [requestUsers](src/Tools/EasyMarkup.php#L126)
-* [requestGroup](src/Tools/EasyMarkup.php#L146)
-* [requestChannel](src/Tools/EasyMarkup.php#L165)
+* [addText(string $text)](src/Utils/EasyMarkup.php#L28)
+* [addTexts](src/Utils/EasyMarkup.php#L38)
+* [addProfile](src/Utils/EasyMarkup.php#L48)
+* [addWebApp](src/Utils/EasyMarkup.php#L59)
+* [requestPoll](src/Utils/EasyMarkup.php#L69)
+* [requestPollQuiz](src/Utils/EasyMarkup.php#L79)
+* [requestPollRegular](src/Utils/EasyMarkup.php#L89)
+* [requestLocation](src/Utils/EasyMarkup.php#L99)
+* [requestPhone](src/Utils/EasyMarkup.php#L109)
+* [requestUsers](src/Utils/EasyMarkup.php#L126)
+* [requestGroup](src/Utils/EasyMarkup.php#L146)
+* [requestChannel](src/Utils/EasyMarkup.php#L165)
 
 #### By Button
 
@@ -185,8 +190,8 @@ KeyboardInline::new()
     )
     ->row()
     ->addButton(
-        InlineButton::Callback('C','answer-c'),
-        InlineButton::Callback('D','answer-d')
+        InlineButton::Callback('C', 'answer-c'),
+        InlineButton::Callback('D', 'answer-d')
     );
 ```
 
@@ -197,11 +202,11 @@ You can remove the last button by calling `remove` method here is an example :
 
 ```php
 KeyboardInline::new()
-    ->addButton(InlineButton::Callback('A','answer-a'))
-    ->addButton(InlineButton::Callback('B','answer-b'))
+    ->addButton(InlineButton::Callback('A', 'answer-a'))
+    ->addButton(InlineButton::Callback('B', 'answer-b'))
     ->row()
-    ->addButton(InlineButton::Callback('C','answer-c'))
-    ->addButton(InlineButton::Callback('D','answer-d'))
+    ->addButton(InlineButton::Callback('C', 'answer-c'))
+    ->addButton(InlineButton::Callback('D', 'answer-d'))
     ->remove();
 ```
 In this example button D will remove from buttons.
@@ -212,37 +217,37 @@ You can add button to each coordinates you want! (Note that coordinates start fr
 for example imagine we have this keyboard :
 ```php
 $keyboard = KeyboardInline::new()
-    ->addButton(InlineButton::Callback('Numbers','Numbers'))
-    ->addButton(InlineButton::Callback('Status','Status'))
+    ->addButton(InlineButton::Callback('Numbers', 'Numbers'))
+    ->addButton(InlineButton::Callback('Status', 'Status'))
     ->row()
-    ->addButton(InlineButton::Callback('Add','Add'))
-    ->addButton(InlineButton::Callback('Remove','Remove'));
+    ->addButton(InlineButton::Callback('Add', 'Add'))
+    ->addButton(InlineButton::Callback('Remove', 'Remove'));
 ```
 we can add new button with it coordinates(raw and column) by calling `addToCoordinates` method.
 This methods will add new button in the coordinate that you passed and shift next buttons of the coordinates.
 This picture show you the position of new button :
 
-![Screenshot_20230907_212829](https://github.com/mtalaeii/fluent-keyboard/assets/73236713/89c0427e-c1c1-4fa2-8a2b-6d13ecf92286)
+![addToCoordinates](./assets/add-to-coordinates.png)
 ```php
-$keyboard->addToCoordinates(0,1,InlineButton::Callback('Middle','Middle'));
+$keyboard->addToCoordinates(0, 1, InlineButton::Callback('Middle','Middle'));
 ```
 The results should like this image :
 
-![Screenshot_20230907_213111](https://github.com/mtalaeii/fluent-keyboard/assets/73236713/ee148e4e-a990-402d-b99d-94065e77b3f5)
+![addToCoordinatesResult](./assets/add-to-coordinates-result.png)
 
 You can also replace into specific coordinates unlike `addToCoordinates` the `replaceIntoCoordinates` method will replace
 your new button into passed coordinate for example if we want to replace Add in this example like this picture :
 
-![Screenshot_20230907_213957](https://github.com/mtalaeii/fluent-keyboard/assets/73236713/080e58b0-ed06-44b9-bcbb-27ef2719c0ef)
+![replaceIntoCoordinates](./assets/replace-Into-coordinates.png)
 
 we should use this code :
 
 ```php
-$keyboard->replaceIntoCoordinates(1,0,InlineButton::Callback('Replaced Add','Add'));
+$keyboard->replaceIntoCoordinates(1, 0, InlineButton::Callback('Replaced Add','Add'));
 ```
 The result should like this image :
 
-![Screenshot_20230907_214232](https://github.com/mtalaeii/fluent-keyboard/assets/73236713/3dcd8604-9afd-4d99-93ba-ad18d260b48f)
+![replaceIntoCoordinatesResult](./assets/replace-Into-coordinates-result.png)
 
 You can also remove the button by it's coordinates for example if we want remove Add button(in last example) 
 we should run this code:
@@ -273,17 +278,11 @@ KeyboardInline::new()
 KeyboardForceReply and KeyboardHide can be used the same way as a normal keyboard, but they do not receive any buttons:
 
 ```php
-#[FilterAnd(new FilterPrivate)]
-public function handleExit(Message $message) {
-    $message->reply('Thank you',
-        replyMarkup : KeyboardHide::new()
-    );
-}
-
+$keyboard = KeyboardHide::new();
 ```
 
 ```php
-$data['reply_markup'] = KeyboardForceReply::new()
+KeyboardForceReply::new()
     ->addButton(KeyboardButton::Text('Hello please reply'))
     ->placeholder('must reply');
 ```
@@ -314,7 +313,7 @@ KeyboardMarkup::new()
 ```
 ```php
 KeyboardMarkup::new()
-    ->RequestGroup('Request for chat', 1);
+    ->requestGroup('Request for chat', 1);
 ```
 ```php
 KeyboardMarkup::new()
@@ -322,31 +321,80 @@ KeyboardMarkup::new()
 ```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Convert Telegram Keyboard To Easy Keyboard
+### Convert Keyboards
 
-You can now easily convert telegram keyboards to easy keyboard for modify and ...
-using `tryFrom` methods! here is and example
+You can now easily convert telegram keyboards for modify and ...
+using `fromBotApi` or `fromMtproto` (for [MadelineProto](https://docs.madelineproto.xyz/)) methods!
+
+Here is an example
+
+(for now `fromBotApi` only accepts inline keyboards)
+
+#### **Telegram API**
 
 ```php
-$easyKeyboard = Keyboard::tryFrom($replyMarkup);
+$keyboard = Keyboard::fromBotApi([
+    "inline_keyboard": [
+        [
+            ["text" => "Callback data", "callback_data" => "Some data"]
+        ],
+        [
+            [ "text" => "Hide keyboard", "callback_data" => "HIDE"]
+        ]
+    ]
+]);
+$keyboard->addButton(InlineButton::Callback('End','End'));
+// Convert to mtproto syntax
+$keyborad->toMtproto();
 ```
-As you know `$easyKeyboard` is object here and you can modify and add more buttons to it.
-here is an example if `$easyKeyboard` instance of `KeyboardInline`
 
+#### **Mtproto**
 ```php
-$easyKeyboard->addButton(InlineButton::Callback('End','End'));
+$keyboard = Keyboard::fromMtproto([
+    '_' => 'replyInlineMarkup',
+    'rows' => [
+        [
+            '_' => 'keyboardButtonRow',
+            'buttons' => [
+                ['_' => 'keyboardButtonCallback', 'text' => '1', 'data' => '0'],
+                ['_' => 'keyboardButtonCallback', 'text' => '2', 'data' => '1'],
+                ['_' => 'keyboardButtonCallback', 'text' => '🟢', 'data' => 'stat'],
+                ['_' => 'keyboardButtonCallback', 'text' => '3', 'data' => '2'],
+                ['_' => 'keyboardButtonCallback', 'text' => '4', 'data' => '3']
+            ]
+        ],
+        [
+            '_' => 'keyboardButtonRow',
+            'buttons' => [
+                ['_' => 'keyboardButtonCallback', 'text' => '10', 'data' => '9'],
+                ['_' => 'keyboardButtonCallback', 'text' => '11', 'data' => '10'],
+                ['_' => 'keyboardButtonCallback', 'text' => '12', 'data' => '11'],
+
+            ]
+        ],
+        [
+            '_' => 'keyboardButtonRow',
+            'buttons' => [
+                ['_' => 'keyboardButtonCallback','text' => '13', 'data' => '12'],
+                ['_' => 'keyboardButtonCallback','text' => '14', 'data' => '13']
+            ]
+        ]
+    ],
+]);
+$keyboard->addButton(InlineButton::Callback('15','14'));
+// Convert to telegram api syntax
+$keyborad->toApi();
+json_encode($keyborad);
 ```
-<!---
-At the end you can call `json_encode` method on that and pass to some telegram method (Reymon will handle this automaticlly). here is an
-example for [Reymon](https://github.com/ReymonTg/Reymon) :
+
+As you know `$keyboard` is object here and you can modify and add more buttons to it.
+Or event iterate it!:
 
 ```php
-#[FilterAnd(new FilterPrivate, new FilterIncoming)]
-public function modify(Message $message) {
-    $message->reply('That is new keyboard',
-        replyMarkup : $easyKeyboard
-    );
+foreach ($keyboard as $row) {
+    foreach ($row as $button) {
+        printf("Text: %s Callback: %s", $button->getText(), $button->getCallback());
+    }
 }
 ```
---->
 <p align="right">(<a href="#top">back to top</a>)</p>
