@@ -6,35 +6,27 @@ on:
       - main
   pull_request:
 
-
 jobs:
   tests:
     strategy:
       matrix:
         include:
           - operating-system: 'ubuntu-latest'
-            php-version: '8.1'
-
-          - operating-system: 'ubuntu-latest'
-            php-version: '8.2'
+            php-version: '8.4'
 
           - operating-system: 'ubuntu-latest'
             php-version: '8.3'
 
           - operating-system: 'windows-latest'
-            php-version: '8.1'
-            job-description: 'on Windows'
-
-          - operating-system: 'windows-latest'
-            php-version: '8.2'
-            job-description: 'on Windows'
-
-          - operating-system: 'windows-latest'
             php-version: '8.3'
+            job-description: 'on Windows'
+
+          - operating-system: 'windows-latest'
+            php-version: '8.4'
             job-description: 'on Windows'
 
           - operating-system: 'macos-latest'
-            php-version: '8.1'
+            php-version: '8.4'
             job-description: 'on macOS'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
@@ -84,7 +76,4 @@ jobs:
         run: composer test
 
       - name: Run style fixer
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: 1
         run: vendor/bin/php-cs-fixer --diff --dry-run -v fix
-        if: runner.os != 'Windows'
