@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\KeyboardButton;
+namespace Reymon\KeyboardButton;
 
-use Reymon\EasyKeyboard\KeyboardButton;
+use Reymon\KeyboardButton;
 
 abstract class RequestPeer extends KeyboardButton
 {
@@ -50,5 +50,20 @@ abstract class RequestPeer extends KeyboardButton
     {
         $this->photo = $photo;
         return $this;
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            [
+                '_' => 'inputKeyboardButtonRequestPeer',
+                'button_id'          => $this->buttonId,
+                'name_requested'     => $this->name,
+                'photo_requested'    => $this->photo,
+                'username_requested' => $this->username,
+            ],
+        );
     }
 }

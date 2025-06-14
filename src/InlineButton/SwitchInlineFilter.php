@@ -12,7 +12,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
 /**
  * Represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
@@ -90,21 +90,43 @@ final class SwitchInlineFilter extends SwitchInline
     {
         return new static($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels);
     }
-
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'switch_inline_query_chosen_chat' => array_filter_null([
-                'query' => $this->query,
-                'allow_user_chats'    => $this->allowUsers,
-                'allow_bot_chats'     => $this->allowBots,
-                'allow_group_chats'   => $this->allowGroups,
-                'allow_channel_chats' => $this->allowChannels,
-            ])
-        ];
+        return \array_merge(
+            parent::toApi(),
+            [
+                'text' => $this->text,
+                'switch_inline_query_chosen_chat' => array_filter_null([
+                    'query' => $this->query,
+                    'allow_user_chats'    => $this->allowUsers,
+                    'allow_bot_chats'     => $this->allowBots,
+                    'allow_group_chats'   => $this->allowGroups,
+                    'allow_channel_chats' => $this->allowChannels,
+                ])
+            ],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        $filter = [];
+
+        if ($this->allowUsers) {
+            $filter[] = ['_' => 'inlineQueryPeerTypePM'];
+        } elseif ($this->allowBots) {
+            $filter[] = ['_' => 'inlineQueryPeerTypeBotPM'];
+        } elseif ($this->allowGroups) {
+            $filter[] = ['_' => 'inlineQueryPeerTypeMegagroup'];
+        } elseif ($this->allowChannels) {
+            $filter[] = ['_' => 'inlineQueryPeerTypeBroadcast'];
+        }
+
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonSwitchInline', 'query' => $this->query, 'peer_types' => $filter],
+        );
     }
 }

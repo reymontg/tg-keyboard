@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
+use Reymon\InlineButton;
 
 /**
  * Represents inline button with callback data.
@@ -52,14 +52,21 @@ final class CallBack extends InlineButton
         return new static($text, $callback);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'          => $this->text,
-            'callback_data' => $this->callback
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['callback_data' => $this->callback],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonCallback', 'data' => $this->callback],
+        );
     }
 }

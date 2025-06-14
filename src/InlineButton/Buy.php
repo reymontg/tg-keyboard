@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
+use Reymon\InlineButton;
 
 /**
  * Represents buy button for your inline buy request(similar to webapps).
@@ -39,14 +39,21 @@ final class Buy extends InlineButton
         return new static($text);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'pay'  => true
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['pay' => true],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonBuy'],
+        );
     }
 }

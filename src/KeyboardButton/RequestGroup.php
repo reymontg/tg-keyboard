@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\KeyboardButton;
+namespace Reymon\KeyboardButton;
 
-use Reymon\EasyKeyboard\Utils\ChatAdminRights;
+use Reymon\Type\Chat\AdministratorRights;
 
 /**
  * Represents button the criteria used to request a suitable group/supergroup. The identifier of the selected chat will be shared with the bot when the corresponding button is pressed.
@@ -22,19 +22,19 @@ use Reymon\EasyKeyboard\Utils\ChatAdminRights;
 final class RequestGroup extends RequestPeer
 {
     /**
-     * @param string           $text            Label text on the button
-     * @param int              $buttonId        Signed 32-bit identifier of the request
-     * @param ?bool            $creator         Whether to request a chat owned by the user.
-     * @param ?bool            $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
-     * @param ?bool            $forum           Whether to request a forum (or non-forum) supergroup.
-     * @param ?bool            $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
-     * @param bool             $name            Whether to request the chat's title
-     * @param bool             $username        Whether to request the chat's username
-     * @param bool             $photo           Whether to request the chat's photo
-     * @param ?ChatAdminRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
-     * @param ?ChatAdminRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     * @param string               $text            Label text on the button
+     * @param int                  $buttonId        Signed 32-bit identifier of the request
+     * @param ?bool                $creator         Whether to request a chat owned by the user.
+     * @param ?bool                $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
+     * @param ?bool                $forum           Whether to request a forum (or non-forum) supergroup.
+     * @param ?bool                $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+     * @param bool                 $name            Whether to request the chat's title
+     * @param bool                 $username        Whether to request the chat's username
+     * @param bool                 $photo           Whether to request the chat's photo
+     * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
+     * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      */
-    public function __construct(string $text, int $buttonId, private ?bool $creator = null, private ?bool $hasUsername = null, private ?bool $forum = null, private ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, private ?ChatAdminRights $userAdminRights = null, private ?ChatAdminRights $botAdminRights = null)
+    public function __construct(string $text, int $buttonId, private ?bool $creator = null, private ?bool $hasUsername = null, private ?bool $forum = null, private ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, private ?AdministratorRights $userAdminRights = null, private ?AdministratorRights $botAdminRights = null)
     {
         parent::__construct($text, $buttonId, $name, $username, $photo);
     }
@@ -42,43 +42,62 @@ final class RequestGroup extends RequestPeer
     /**
      * Create button the criteria used to request a suitable group/supergroup. The identifier of the selected chat will be shared with the bot when the corresponding button is pressed.
      *
-     * @param string           $text            Label text on the button
-     * @param int              $buttonId        Signed 32-bit identifier of the request
-     * @param ?bool            $creator         Whether to request a chat owned by the user.
-     * @param ?bool            $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
-     * @param ?bool            $forum           Whether to request a forum (or non-forum) supergroup.
-     * @param ?bool            $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
-     * @param bool             $title           Whether to request the chat's title
-     * @param bool             $username        Whether to request the chat's username
-     * @param bool             $photo           Whether to request the chat's photo
-     * @param ?ChatAdminRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
-     * @param ?ChatAdminRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     * @param string               $text            Label text on the button
+     * @param int                  $buttonId        Signed 32-bit identifier of the request
+     * @param ?bool                $creator         Whether to request a chat owned by the user.
+     * @param ?bool                $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
+     * @param ?bool                $forum           Whether to request a forum (or non-forum) supergroup.
+     * @param ?bool                $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+     * @param bool                 $title           Whether to request the chat's title
+     * @param bool                 $username        Whether to request the chat's username
+     * @param bool                 $photo           Whether to request the chat's photo
+     * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
+     * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      */
-    public static function new(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $title = false, bool $username = false, bool $photo = false, ?ChatAdminRights $userAdminRights = null, ?ChatAdminRights $botAdminRights = null): self
+    public static function new(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $title = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): self
     {
         return new static($text, $buttonId, $creator, $hasUsername, $forum, $member, $title, $username, $photo, $userAdminRights, $botAdminRights);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'         => $this->text,
-            'request_chat' => array_filter_null([
-                'chat_is_channel'   => false,
-                'request_id'        => $this->buttonId,
-                'chat_is_forum'     => $this->forum,
-                'chat_has_username' => $this->hasUsername,
-                'chat_is_created'   => $this->creator,
-                'bot_is_member'     => $this->member,
-                'request_title'     => $this->name,
-                'request_username'  => $this->username,
-                'request_photo'     => $this->photo,
-                'user_admin_rights' => $this->userAdminRights,
-                'bot_admin_rights'  => $this->botAdminRights
-            ])
-        ];
+        return \array_merge(
+            parent::toApi(),
+            [
+                'request_chat' => array_filter_null([
+                    'chat_is_channel'   => false,
+                    'request_id'        => $this->buttonId,
+                    'request_title'     => $this->name,
+                    'request_photo'     => $this->photo,
+                    'request_username'  => $this->username,
+                    'chat_is_forum'     => $this->forum,
+                    'chat_has_username' => $this->hasUsername,
+                    'chat_is_created'   => $this->creator,
+                    'bot_is_member'     => $this->member,
+                    'user_admin_rights' => $this->userAdminRights?->toApi(),
+                    'bot_admin_rights'  => $this->botAdminRights?->toApi(),
+                ])
+            ],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            [
+                'peer_type' => array_filter_null([
+                    '_' => 'requestPeerTypeChat',
+                    'forum'             => $this->forum,
+                    'creator'           => $this->creator,
+                    'has_username'      => $this->hasUsername,
+                    'bot_participant'   => $this->member,
+                    'user_admin_rights' => $this->userAdminRights?->toApi(),
+                    'bot_admin_rights'  => $this->botAdminRights?->toApi()
+                ]),
+            ],
+        );
     }
 }

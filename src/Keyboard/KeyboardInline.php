@@ -13,10 +13,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\Keyboard;
+namespace Reymon\Keyboard;
 
-use Reymon\EasyKeyboard\Keyboard;
-use Reymon\EasyKeyboard\Utils\EasyInline;
+use Reymon\Keyboard;
+use Reymon\Utils\EasyInline;
 
 /**
  * Represents an inline keyboard that appears right next to the message it belongs to.
@@ -25,12 +25,24 @@ final class KeyboardInline extends Keyboard
 {
     use EasyInline;
 
-    /**
-     * @internal
-     */
+    #[\Override]
+    public function toApi(): array
+    {
+        return ['inline_keyboard' => $this->getButtons()];
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return [
+            '_'    => 'replyInlineMarkup',
+            'rows' => $this->getButtons(),
+        ];
+    }
+
+    #[\Override]
     public function jsonSerialize(): array
     {
-        parent::jsonSerialize();
-        return [...$this->option, 'inline_keyboard' => $this->data];
+        return $this->toApi();
     }
 }

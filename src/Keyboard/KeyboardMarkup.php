@@ -13,53 +13,70 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\Keyboard;
+namespace Reymon\Keyboard;
 
-use Reymon\EasyKeyboard\Keyboard;
-use Reymon\EasyKeyboard\Utils\EasyMarkup;
-use Reymon\EasyKeyboard\Utils\Placeholder;
-use Reymon\EasyKeyboard\Utils\Selective;
+use Reymon\Keyboard;
+use Reymon\Utils\Selective;
+use Reymon\Utils\SingleUse;
+use Reymon\Utils\EasyMarkup;
+use Reymon\Utils\Placeholder;
 
 /**
  * Represents a custom keyboard with reply options.
  */
 final class KeyboardMarkup extends Keyboard
 {
-    use Selective, Placeholder, EasyMarkup;
+    use Selective, Placeholder, SingleUse, EasyMarkup;
 
-    /**
-     * Whether to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat - the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
-     */
-    public function singleUse(bool $singleUse = true): self
-    {
-        $this->option['one_time_keyboard'] = $singleUse;
-        return $this;
-    }
+    private bool $resize = true;
+    private bool $alwaysShow = false;
 
     /**
      * Whether to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
      */
     public function resize(bool $resize = true): self
     {
-        $this->option['resize_keyboard'] = $resize;
+        $this->resize = $resize;
         return $this;
     }
 
     /**
      * Whether to always show the keyboard when the regular keyboard is hidden. Defaults to false, in which case the custom keyboard can be hidden and opened with a keyboard icon.
      */
-    public function alwaysShow(bool $show = true): self
+    public function alwaysShow(bool $alwaysShow = true): self
     {
-        $this->option['is_persistent'] = $show;
+        $this->alwaysShow = $alwaysShow;
         return $this;
     }
 
-    /**
-     * @internal
-     */
+    #[\Override]
+    public function toApi(): array
+    {
+        return array_filter_null([
+            'keyboard' => $this->getButtons(),
+            'is_persistent'     => $this->alwaysShow,
+            'resize_keyboard'   => $this->resize,
+            'one_time_keyboard' => $this->singleUse,
+        ]);
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return array_filter_null([
+            '_' => 'replyKeyboardMarkup',
+            'rows'        => $this->getButtons(),
+            'resize'      => $this->resize,
+            'single_use'  => $this->singleUse,
+            'selective'   => $this->selective,
+            'persistent'  => $this->alwaysShow,
+            'placeholder' => $this->placeholder,
+        ]);
+    }
+
+    #[\Override]
     public function jsonSerialize(): array
     {
-        parent::jsonSerialize();
-        return [...$this->option, 'keyboard' => $this->data];
+        return $this->toApi();
     }
 }

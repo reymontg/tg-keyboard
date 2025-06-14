@@ -13,9 +13,11 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\KeyboardButton\Poll;
+namespace Reymon\KeyboardButton\Poll;
 
-enum PollType: string implements \JsonSerializable
+use Reymon\Type;
+
+enum PollType: string implements Type
 {
     case QUIZ = 'quiz';
 
@@ -23,11 +25,18 @@ enum PollType: string implements \JsonSerializable
 
     case ALL = '';
 
+    #[\Override]
+    public function toApi(): string
+    {
+        return $this->value;
+    }
+
     /**
      * @internal
      */
+    #[\Override]
     public function jsonSerialize(): string
     {
-        return $this->value;
+        return $this->toApi();
     }
 }

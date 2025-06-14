@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\KeyboardButton;
+namespace Reymon\KeyboardButton;
 
-use Reymon\EasyKeyboard\KeyboardButton;
+use Reymon\KeyboardButton;
 
 /**
  * Represents text button that request contact info from user.
@@ -39,14 +39,21 @@ final class Phone extends KeyboardButton
         return new static($text);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'request_contact' => true
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['request_contact' => true],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonRequestPhone'],
+        );
     }
 }

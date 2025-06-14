@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
+use Reymon\InlineButton;
 
 /**
  * Rrepresents an inline button that copies specified text to the clipboard.
@@ -52,14 +52,21 @@ final class CopyText extends InlineButton
         return new static($text, $copyText);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'      => $this->text,
-            'copy_text' => ['text' => $this->copyText]
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['copy_text' => ['text' => $this->copyText]],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonCopy', 'copy_text' => $this->copyText],
+        );
     }
 }

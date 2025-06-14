@@ -13,12 +13,12 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\Keyboard;
+namespace Reymon\Keyboard;
 
-use Reymon\EasyKeyboard\Button;
-use Reymon\EasyKeyboard\Exception;
-use Reymon\EasyKeyboard\Keyboard;
-use Reymon\EasyKeyboard\Utils\Selective;
+use Reymon\Button;
+use Reymon\Keyboard;
+use Reymon\Utils\Selective;
+use Reymon\Exception\KeyboardException;
 
 /**
  * Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard.
@@ -27,14 +27,36 @@ final class KeyboardHide extends Keyboard
 {
     use Selective;
 
-    public function __construct()
-    {
-        $this->option['remove_keyboard'] = true;
-    }
-
     public function addButton(Button ...$buttons): Keyboard
     {
-        throw new Exception(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
+        throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
+    }
+
+    #[\Override]
+    public function toApi(): array
+    {
+        return [
+            'remove_keyboard' => true,
+            'selective' => $this->selective,
+        ];
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return [
+            '_' => 'replyKeyboardHide',
+            'selective' => $this->selective,
+        ];
+    }
+
+    /**
+     * @internal
+     */
+    #[\Override]
+    public function jsonSerialize(): array
+    {
+        return $this->toApi();
     }
 
     /**

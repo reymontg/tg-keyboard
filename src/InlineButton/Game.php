@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
+use Reymon\InlineButton;
 
 /**
  * Represents game button for your inline game.
@@ -39,14 +39,21 @@ final class Game extends InlineButton
         return new static($text);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'          => $this->text,
-            'callback_game' => ''
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['callback_game' => ''],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonGame'],
+        );
     }
 }

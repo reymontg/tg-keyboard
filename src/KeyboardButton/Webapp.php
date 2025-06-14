@@ -12,10 +12,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\KeyboardButton;
+namespace Reymon\KeyboardButton;
 
-use Reymon\EasyKeyboard\KeyboardButton;
-use Reymon\EasyKeyboard\Utils\Url;
+use Reymon\KeyboardButton;
+use Reymon\Utils\Url;
 
 /**
  * Represents text button that open web app without requiring user information.
@@ -44,14 +44,21 @@ final class Webapp extends KeyboardButton
         return new static($text, $url);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'    => $this->text,
-            'web_app' => ['url' => $this->url]
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['web_app' => ['url' => $this->url]],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonSimpleWebView', 'url' => $this->url],
+        );
     }
 }

@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
+use Reymon\InlineButton;
 
 /**
  * Represents inline button that switches the current user to inline mode in a chat.
@@ -52,14 +52,21 @@ class SwitchInline extends InlineButton
         return new static($text, $query);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'switch_inline_query' => $this->query
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['switch_inline_query' => $this->query],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonSwitchInline', 'query' => $this->query],
+        );
     }
 }

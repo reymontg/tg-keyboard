@@ -12,10 +12,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
-use Reymon\EasyKeyboard\Utils\Url as ToolsUrl;
+use Reymon\InlineButton;
+use Reymon\Utils\Url as ToolsUrl;
 
 /**
  * Represents inline button with url.
@@ -44,14 +44,21 @@ final class Url extends InlineButton
         return new static($text, $url);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'url'  => $this->url
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['url' => $this->url],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonUrl', 'url' => $this->url],
+        );
     }
 }

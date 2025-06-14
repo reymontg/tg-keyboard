@@ -13,7 +13,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
 /**
  * Represents inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
@@ -40,14 +40,21 @@ final class SwitchInlineCurrent extends SwitchInline
         return new static($text, $query);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'switch_inline_query_current_chat' => $this->query
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['switch_inline_query_current_chat' => $this->query],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButtonSwitchInline', 'query' => $this->query, 'same_peer' => true],
+        );
     }
 }

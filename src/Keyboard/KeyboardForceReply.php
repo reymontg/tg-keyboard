@@ -13,34 +13,58 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\Keyboard;
+namespace Reymon\Keyboard;
 
-use Reymon\EasyKeyboard\Button;
-use Reymon\EasyKeyboard\Exception;
-use Reymon\EasyKeyboard\Keyboard;
-use Reymon\EasyKeyboard\Utils\Placeholder;
-use Reymon\EasyKeyboard\Utils\Selective;
+use Reymon\Button;
+use Reymon\Keyboard;
+use Reymon\Utils\SingleUse;
+use Reymon\Utils\Selective;
+use Reymon\Utils\Placeholder;
+use Reymon\Exception\KeyboardException;
 
 /**
  * Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'.
  */
 final class KeyboardForceReply extends Keyboard
 {
-    use Selective, Placeholder;
-
-    public function __construct()
-    {
-        $this->option['force_reply'] = true;
-    }
+    use Selective, Placeholder, SingleUse;
 
     public function addButton(Button ...$buttons): Keyboard
     {
-        throw new Exception(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
+        throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
+    }
+
+    #[\Override]
+    public function toApi(): array
+    {
+        return array_filter_null([
+            'force_reply' => true,
+            'selective'   => $this->selective,
+            'input_field_placeholder' => $this->placeholder // todo: add one time keyboard?
+        ]);
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return array_filter_null([
+            '_' => 'replyKeyboardForceReply',
+            'single_use'  => $this->singleUse,
+            'selective'   => $this->selective,
+            'placeholder' => $this->placeholder
+        ]);
+    }
+
+    #[\Override]
+    public function jsonSerialize(): array
+    {
+        return $this->toApi();
     }
 
     /**
      * @internal
      */
+    #[\Override]
     public function getIterator(): \EmptyIterator
     {
         return new \EmptyIterator;

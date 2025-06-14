@@ -12,10 +12,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\KeyboardButton;
+namespace Reymon\KeyboardButton;
 
-use Reymon\EasyKeyboard\KeyboardButton;
-use Reymon\EasyKeyboard\KeyboardButton\Poll\PollType;
+use Reymon\KeyboardButton;
+use Reymon\KeyboardButton\Poll\PollType;
 
 /**
  * Represents text button that request poll from user.
@@ -52,14 +52,27 @@ final class Poll extends KeyboardButton
         return new static($text, $type);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text' => $this->text,
-            'request_poll' => $this->type
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['request_poll' => $this->type->toApi()],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        $data = ['_' => 'keyboardButtonRequestPoll'];
+
+        if ($this->type === PollType::QUIZ) {
+            $data['quiz'] = true;
+        }
+
+        return \array_merge(
+            parent::toMtproto(),
+            $data,
+        );
     }
 }

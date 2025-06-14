@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
+use Reymon\InlineButton;
 
 /**
  * Represents button to be shown above inline query results.
@@ -52,14 +52,21 @@ final class Start extends InlineButton
         return new static($text, $param);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'            => $this->text,
-            'start_parameter' => $this->param,
-        ];
+        return \array_merge(
+            parent::toApi(),
+            ['start_parameter' => $this->param],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'inlineBotSwitchPM', 'start_param' => $this->param],
+        );
     }
 }

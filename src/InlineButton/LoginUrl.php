@@ -12,10 +12,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard\InlineButton;
+namespace Reymon\InlineButton;
 
-use Reymon\EasyKeyboard\InlineButton;
-use Reymon\EasyKeyboard\Utils\Url;
+use Reymon\InlineButton;
+use Reymon\Utils\Url;
 
 /**
  * Represents inline button for login.
@@ -27,24 +27,24 @@ final class LoginUrl extends InlineButton
     /**
      * @param string  $text        Label text on the button
      * @param string  $url         An HTTPS URL used to automatically authorize the user
-     * @param ?string $fwdText     New text of the button in forwarded messages
+     * @param ?string $forwardText New text of the button in forwarded messages
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public function __construct(string $text, private string $url, private ?string $fwdText = null, private ?string $username = null, private bool $writeAccess = false)
+    public function __construct(string $text, private string $url, private ?string $forwardText = null, private ?string $username = null, private bool $writeAccess = false)
     {
         parent::__construct($text);
     }
 
-    public function setForwardText(?string $fwdText = null): self
+    public function setForwardText(?string $forwardText = null): self
     {
-        $this->fwdText = $fwdText;
+        $this->forwardText = $forwardText;
         return $this;
     }
 
     public function getForwardText(): ?string
     {
-        return $this->fwdText;
+        return $this->forwardText;
     }
 
     public function setUsername(?string $username = null): self
@@ -74,28 +74,44 @@ final class LoginUrl extends InlineButton
      *
      * @param string  $text        Label text on the button
      * @param string  $url         An HTTPS URL used to automatically authorize the user
-     * @param ?string $fwdText     New text of the button in forwarded messages
+     * @param ?string $forwardText New text of the button in forwarded messages
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public static function new(string $text, string $url, ?string $fwdText = null, ?string $username = null, bool $writeAccess = false): self
+    public static function new(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): self
     {
-        return new static($text, $url, $fwdText, $username, $writeAccess);
+        return new static($text, $url, $forwardText, $username, $writeAccess);
     }
 
-    /**
-     * @internal
-     */
-    public function jsonSerialize(): array
+    #[\Override]
+    public function toApi(): array
     {
-        return [
-            'text'      => $this->text,
-            'login_url' => array_filter_null([
-                'url'                  => $this->url,
-                'forward_text'         => $this->fwdText,
-                'bot_username'         => $this->username,
+        return \array_merge(
+            parent::toApi(),
+            [
+                'text'      => $this->text,
+                'login_url' => array_filter_null([
+                    'url' => $this->url,
+                    'forward_text' => $this->forwardText,
+                    'bot_username' => $this->username,
+                    'request_write_access' => $this->writeAccess,
+                ]),
+            ],
+        );
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            [
+                '_' => 'inputKeyboardButtonUrlAuth',
+                'url' => $this->url,
+                'bot' => $this->username,
+                'fwd_text' => $this->forwardText,
                 'request_write_access' => $this->writeAccess,
-            ]),
-        ];
+            ],
+        );
     }
 }
