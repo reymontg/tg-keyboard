@@ -1,10 +1,11 @@
 {
-    "name"       : "reymon/easy-keyboard",
-    "description": "An easy keyboard builder for Telegram Api syntax",
+    "name"       : "reymon/tg-keyboard",
+    "description": "An easy keyboard builder for Telegram Api & Mtproto syntax",
     "keywords"   : [
         "bot",
         "api",
-        "easy",
+        "mtproto",
+        "madelineproto",
         "keyboard",
         "builder",
         "telegram",
@@ -24,19 +25,19 @@
     ],
     "autoload": {
         "psr-4": {
-            "Reymon\\EasyKeyboard\\": "./src"
-        },
-        "files": ["src/functions.php"]
+            "Reymon\\": "./src"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Reymon\\EasyKeyboard\\Test\\": "./tests"
+            "Reymon\\Keyboard\\Test\\": "./tests"
         }
     },
     "require": {
-        "php-64bit"   : ">=8.0",
-        "ext-json"    : "*",
-        "ext-mbstring": "*"
+        "php-64bit"       : ">=8.3",
+        "ext-json"        : "*",
+        "ext-mbstring"    : "*",
+        "reymon/tg-common": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit"          : "^9",

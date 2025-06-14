@@ -13,8 +13,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\EasyKeyboard;
+namespace Reymon\Exception;
 
-final class Exception extends \Exception
+use Reymon\Exception;
+
+final class KeyboardException extends Exception
 {
 }
