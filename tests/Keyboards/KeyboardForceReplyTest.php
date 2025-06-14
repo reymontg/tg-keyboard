@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Reymon\EasyKeyboard\Test\Keyboards;
+namespace Reymon\Keyboard\Test\Keyboards;
 
-use Reymon\EasyKeyboard\Keyboard\KeyboardForceReply;
-use Reymon\EasyKeyboard\Test\Buttons\KeyboardButtonTest;
+use Reymon\Keyboard\Test\Buttons\KeyboardButtonTest;
+use Reymon\Keyboard\KeyboardForceReply;
 
 class KeyboardForceReplyTest extends KeyboardButtonTest
 {
@@ -11,7 +11,8 @@ class KeyboardForceReplyTest extends KeyboardButtonTest
     {
         $keyboard = KeyboardForceReply::new();
         $rawKeyboard = [
-            'force_reply' => true
+            'force_reply' => true,
+            'selective'   => false,
         ];
         $this->assertJsonStringEqualsJsonString(\json_encode($keyboard), \json_encode($rawKeyboard));
     }

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Reymon\EasyKeyboard\Test\Buttons;
+namespace Reymon\Keyboard\Test\Buttons;
 
 use PHPUnit\Framework\TestCase;
-use Reymon\EasyKeyboard\KeyboardButton;
-use Reymon\EasyKeyboard\KeyboardButton\Poll\PollType;
+use Reymon\KeyboardButton;
+use Reymon\KeyboardButton\Poll\PollType;
 
 class KeyboardButtonTest extends TestCase
 {

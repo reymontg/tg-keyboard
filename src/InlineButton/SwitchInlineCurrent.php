@@ -43,10 +43,7 @@ final class SwitchInlineCurrent extends SwitchInline
     #[\Override]
     public function toApi(): array
     {
-        return \array_merge(
-            parent::toApi(),
-            ['switch_inline_query_current_chat' => $this->query],
-        );
+        return ['switch_inline_query_current_chat' => $this->query, 'text' => $this->text];
     }
 
     #[\Override]

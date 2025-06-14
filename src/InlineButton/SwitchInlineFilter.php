@@ -94,19 +94,16 @@ final class SwitchInlineFilter extends SwitchInline
     #[\Override]
     public function toApi(): array
     {
-        return \array_merge(
-            parent::toApi(),
-            [
-                'text' => $this->text,
-                'switch_inline_query_chosen_chat' => array_filter_null([
-                    'query' => $this->query,
-                    'allow_user_chats'    => $this->allowUsers,
-                    'allow_bot_chats'     => $this->allowBots,
-                    'allow_group_chats'   => $this->allowGroups,
-                    'allow_channel_chats' => $this->allowChannels,
-                ])
-            ],
-        );
+        return [
+            'text' => $this->text,
+            'switch_inline_query_chosen_chat' => array_filter_null([
+                'query' => $this->query,
+                'allow_user_chats'    => $this->allowUsers,
+                'allow_bot_chats'     => $this->allowBots,
+                'allow_group_chats'   => $this->allowGroups,
+                'allow_channel_chats' => $this->allowChannels,
+            ])
+        ];
     }
 
     #[\Override]
