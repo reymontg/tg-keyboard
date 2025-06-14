@@ -19,6 +19,7 @@ use Reymon\Mtproto\Type;
 use Reymon\Keyboard\KeyboardInline;
 use RangeException;
 use OutOfBoundsException;
+use Reymon\Keyboard\KeyboardMarkup;
 
 /**
  * @implements \IteratorAggregate<list<Button>>
@@ -56,7 +57,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     public function addButton(Button ...$button): self
     {
         $row = &$this->rows[$this->index];
-        $row = \array_merge($row, $button);
+        $row = \array_merge($row ?? [], $button);
         return $this;
     }
 
@@ -131,7 +132,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
         $row = &$this->rows[$this->index];
 
         if (!empty($row)) {
-            $this->rows = [];
+            $this->rows[]= [];
             $this->index++;
         }
 
@@ -153,11 +154,72 @@ abstract class Keyboard implements Type, \IteratorAggregate
     }
 
     /**
-     * Convert Telegram api keyboard to easy-keyboard.
+     * Convert Telegram api keyboard
      *
-     * @param array $replyMarkup array of Telegram api Keyboard
+     * @param array $replyMarkup array of Mtproto keyboard
      */
-    public static function tryFrom(array $replyMarkup): ?self
+    public static function fromMtproto(array $replyMarkup): ?self
+    {
+        if ($replyMarkup['_'] === 'replyKeyboardMarkup') {
+            $keyboard = new KeyboardMarkup;
+        } elseif ($replyMarkup['_'] === 'replyInlineMarkup') {
+            $keyboard = new KeyboardInline;
+        } else {
+            return null;
+        }
+
+        foreach ($replyMarkup['rows'] as ['buttons' => $buttons]) {
+            foreach ($buttons as $button) {
+                $text  = $button['text'];
+                if ($button['_'] === 'keyboardButtonSwitchInline') {
+                    $query = $button['query'];
+                    if ($button['same_peer']) {
+                        $button = InlineButton::SwitchInlineCurrent($text, $query);
+                    } elseif (isset($button['peer_types']) && !empty($button['peer_types'])) {
+                        $types  = \array_column($button['peer_types'], '_');
+                        $button = InlineButton::SwitchInlineFilter(
+                            $text,
+                            $query,
+                            \in_array('inlineQueryPeerTypePM', $types) ?: null,
+                            \in_array('inlineQueryPeerTypeBotPM', $types) ?: null,
+                            \in_array('inlineQueryPeerTypeChat', $types) || \in_array('inlineQueryPeerTypeMegagroup', $types)   ?: null,
+                            \in_array('inlineQueryPeerTypeBroadcast', $types) ?: null,
+                        );
+                    } else {
+                        $button = InlineButton::SwitchInline($text, $query);
+                    }
+                } else {
+                    $button = match ($button['_']) {
+                        'keyboardButtonRequestPhone'       => KeyboardButton::Phone($text),
+                        'keyboardButtonRequestGeoLocation' => KeyboardButton::Location($text),
+                        'keyboardButtonSimpleWebView'      => KeyboardButton::Webapp($text, $button['url']),
+                        'keyboardButtonUrl'                => InlineButton::Url($text, $button['url']),
+                        'keyboardButtonGame'               => InlineButton::Game($text),
+                        'keyboardButtonBuy'                => InlineButton::Buy($text),
+                        'keyboardButtonCallback'           => InlineButton::CallBack($text, $button['data']),
+                        'keyboardButtonWebView'            => InlineButton::Webapp($text, $button['url']),
+                        'keyboardButtonUrlAuth'            => InlineButton::Login(
+                            $text,
+                            $button['url'],
+                            $button['fwd_text'] ?? null,
+                            $button['bot'] ?? null,
+                            isset($button['request_write_access']),
+                        ),
+                    };
+                }
+                $keyboard->addButton($button);
+            }
+            $keyboard->row();
+        }
+        return $keyboard;
+    }
+
+    /**
+     * Convert Telegram api keyboard
+     *
+     * @param array $replyMarkup array of Telegram api keyboard
+     */
+    public static function fromBotApi(array $replyMarkup): ?self
     {
         $replyMarkup = $replyMarkup['inline_keyboard'] ?? false;
         if (!$replyMarkup) {
@@ -167,11 +229,11 @@ abstract class Keyboard implements Type, \IteratorAggregate
         foreach ($replyMarkup as $row) {
             foreach ($row as $button) {
                 $text  = $button['text'];
-                $login = $button['login_url'] ?? null;
                 $query = $button['switch_inline_query'] ?? $button['switch_inline_query_current_chat'] ?? $button['switch_inline_query_chosen_chat']['query'] ?? '';
                 $keyboard->addButton(match (true) {
-                    isset($button['url'])           => InlineButton::Url($text, $button['url']),
-                    isset($button['pay'])           => InlineButton::Buy($text),
+                    isset($button['pay']) => InlineButton::Buy($text),
+                    isset($button['url']) => InlineButton::Url($text, $button['url']),
+                    isset($button['web_app']) => InlineButton::Webapp($text, $button['url']),
                     isset($button['callback_game']) => InlineButton::Game($text),
                     isset($button['callback_data']) => InlineButton::CallBack($text, $button['callback_data']),
                     isset($button['switch_inline_query']) => InlineButton::SwitchInline($text, $query),
@@ -184,12 +246,12 @@ abstract class Keyboard implements Type, \IteratorAggregate
                         $button['switch_inline_query_chosen_chat']['allow_group_chats']   ?? null,
                         $button['switch_inline_query_chosen_chat']['allow_channel_chats'] ?? null,
                     ),
-                    !\is_null($login) => InlineButton::Login(
+                    isset($button['login_url']) => InlineButton::Login(
                         $text,
-                        $login['url'],
-                        $login['forward_text'] ?? null,
-                        $login['bot_username'] ?? null,
-                        isset($login['request_write_access'])
+                        $button['login_url']['url'],
+                        $button['login_url']['forward_text'] ?? null,
+                        $button['login_url']['bot_username'] ?? null,
+                        isset($button['login_url']['request_write_access'])
                     ),
                 });
             }
@@ -232,12 +294,6 @@ abstract class Keyboard implements Type, \IteratorAggregate
      */
     public function getIterator(): \Traversable
     {
-        $rows = $this->getRows();
-
-        foreach ($rows as $row) {
-            foreach ($row as $button) {
-                yield $button;
-            }
-        }
+        yield from $this->getRows();
     }
 }
