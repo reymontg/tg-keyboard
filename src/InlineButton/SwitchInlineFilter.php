@@ -116,6 +116,7 @@ final class SwitchInlineFilter extends SwitchInline
         } elseif ($this->allowBots) {
             $filter[] = ['_' => 'inlineQueryPeerTypeBotPM'];
         } elseif ($this->allowGroups) {
+            $filter[] = ['_' => 'inlineQueryPeerTypeChat'];
             $filter[] = ['_' => 'inlineQueryPeerTypeMegagroup'];
         } elseif ($this->allowChannels) {
             $filter[] = ['_' => 'inlineQueryPeerTypeBroadcast'];
