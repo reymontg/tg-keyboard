@@ -30,4 +30,13 @@ final class Text extends KeyboardButton
     {
         return new static($text);
     }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButton'],
+        );
+    }
 }
