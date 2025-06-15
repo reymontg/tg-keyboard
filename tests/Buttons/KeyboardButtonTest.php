@@ -2,9 +2,9 @@
 
 namespace Reymon\Keyboard\Test\Buttons;
 
-use Reymon\KeyboardButton\Poll\PollType;
-use Reymon\KeyboardButton;
 use PHPUnit\Framework\TestCase;
+use Reymon\KeyboardButton;
+use Reymon\KeyboardButton\Poll\PollType;
 
 class KeyboardButtonTest extends TestCase
 {
