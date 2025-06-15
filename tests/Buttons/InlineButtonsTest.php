@@ -57,11 +57,11 @@ class InlineButtonsTest extends TestCase
         $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
     }
 
-    public function testLogin(): void
+    public function testLoginUrl(): void
     {
-        $button1 = InlineButton::Login('please-login', 'https://example.com');
-        $button2 = InlineButton::Login('please-login', 'https://example.com', 'bye');
-        $button3 = InlineButton::Login('please-login', 'https://example.com', 'bye', 'mahdi', true);
+        $button1 = InlineButton::LoginUrl('please-login', 'https://example.com');
+        $button2 = InlineButton::LoginUrl('please-login', 'https://example.com', 'bye');
+        $button3 = InlineButton::LoginUrl('please-login', 'https://example.com', 'bye', 'mahdi', true);
         $rawButton1 = [
             'login_url' => [
                 'url' => 'https://example.com',

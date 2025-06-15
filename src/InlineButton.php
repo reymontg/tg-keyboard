@@ -81,7 +81,7 @@ abstract class InlineButton extends Button
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public static function Login(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): LoginUrl
+    public static function LoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): LoginUrl
     {
         return new LoginUrl($text, $url, $forwardText, $username, $writeAccess);
     }

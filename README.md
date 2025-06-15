@@ -263,7 +263,7 @@ If you want to add a bunch of buttons that have each a row for themselves you ca
 ```php
 KeyboardInline::new()
     ->Stack(
-        InlineButton::Login('Login','https://example.com/login'),
+        InlineButton::LoginUrl('Login','https://example.com/login'),
         InlineButton::Url('Visit Homepage','https://example.com')
     );
 ```

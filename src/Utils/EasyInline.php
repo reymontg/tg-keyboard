@@ -88,9 +88,9 @@ trait EasyInline
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public function addLogin(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): KeyboardInline
+    public function addLoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): KeyboardInline
     {
-        return $this->addButton(InlineButton::Login($text, $url, $forwardText, $username, $writeAccess));
+        return $this->addButton(InlineButton::LoginUrl($text, $url, $forwardText, $username, $writeAccess));
     }
 
     /**
