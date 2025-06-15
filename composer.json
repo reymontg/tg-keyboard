@@ -48,8 +48,8 @@
             "@cs-fix",
             "@test"
         ],
-        "cs"    : "php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff --dry-run",
-        "cs-fix": "php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff",
+        "cs"    : "PHP_CS_FIXER_IGNORE_ENV=1 php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff --dry-run",
+        "cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff",
         "test"  : "php -d zend.assertions=1 -d assert.exception=1 ./vendor/bin/phpunit tests"
     }
 }
