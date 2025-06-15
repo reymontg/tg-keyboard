@@ -2,8 +2,8 @@
 
 namespace Reymon\Keyboard\Test\Keyboards;
 
-use Reymon\Keyboard\KeyboardForceReply;
 use Reymon\Keyboard\Test\Buttons\KeyboardButtonTest;
+use Reymon\Keyboard\KeyboardForceReply;
 
 class KeyboardForceReplyTest extends KeyboardButtonTest
 {

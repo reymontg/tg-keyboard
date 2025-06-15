@@ -40,7 +40,7 @@
         "reymon/tg-common": "^1.1"
     },
     "require-dev": {
-        "phpunit/phpunit"          : "^9 || ^11",
+        "phpunit/phpunit"          : "^12",
         "amphp/php-cs-fixer-config": "^2"
     },
     "scripts": {
@@ -50,6 +50,6 @@
         ],
         "cs"    : "php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff --dry-run",
         "cs-fix": "php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff",
-        "test"  : "php -d zend.assertions=1 -d assert.exception=1 ./vendor/bin/phpunit --coverage-text tests"
+        "test"  : "php -d zend.assertions=1 -d assert.exception=1 ./vendor/bin/phpunit tests"
     }
 }
