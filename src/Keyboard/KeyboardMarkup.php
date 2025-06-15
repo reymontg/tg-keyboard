@@ -16,10 +16,10 @@
 namespace Reymon\Keyboard;
 
 use Reymon\Keyboard;
-use Reymon\Utils\Selective;
-use Reymon\Utils\SingleUse;
 use Reymon\Utils\EasyMarkup;
 use Reymon\Utils\Placeholder;
+use Reymon\Utils\Selective;
+use Reymon\Utils\SingleUse;
 
 /**
  * Represents a custom keyboard with reply options.

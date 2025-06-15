@@ -15,8 +15,8 @@
 
 namespace Reymon\Utils;
 
-use Reymon\KeyboardButton;
 use Reymon\Keyboard\KeyboardMarkup;
+use Reymon\KeyboardButton;
 use Reymon\KeyboardButton\Poll\PollType;
 use Reymon\Type\Chat\AdministratorRights;
 

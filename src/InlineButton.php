@@ -23,8 +23,8 @@ use Reymon\InlineButton\LoginUrl;
 use Reymon\InlineButton\SwitchInline;
 use Reymon\InlineButton\SwitchInlineCurrent;
 use Reymon\InlineButton\SwitchInlineFilter;
-use Reymon\InlineButton\Webapp;
 use Reymon\InlineButton\Url;
+use Reymon\InlineButton\Webapp;
 
 abstract class InlineButton extends Button
 {

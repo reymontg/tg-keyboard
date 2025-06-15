@@ -90,7 +90,7 @@ final class SwitchInlineFilter extends SwitchInline
     {
         return new static($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels);
     }
-    
+
     #[\Override]
     public function toApi(): array
     {

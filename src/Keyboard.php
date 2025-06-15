@@ -15,11 +15,11 @@
 
 namespace Reymon;
 
-use Reymon\Mtproto\Type;
-use Reymon\Keyboard\KeyboardInline;
-use RangeException;
 use OutOfBoundsException;
+use RangeException;
+use Reymon\Keyboard\KeyboardInline;
 use Reymon\Keyboard\KeyboardMarkup;
+use Reymon\Mtproto\Type;
 
 /**
  * @implements \IteratorAggregate<list<Button>>
@@ -49,7 +49,6 @@ abstract class Keyboard implements Type, \IteratorAggregate
         }
         return $rows;
     }
-
 
     /**
      * Add button(s) to keyboard.
@@ -154,7 +153,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     }
 
     /**
-     * Convert Telegram api keyboard
+     * Convert Telegram api keyboard.
      *
      * @param array $replyMarkup array of Mtproto keyboard
      */
@@ -215,7 +214,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     }
 
     /**
-     * Convert Telegram api keyboard
+     * Convert Telegram api keyboard.
      *
      * @param array $replyMarkup array of Telegram api keyboard
      */
