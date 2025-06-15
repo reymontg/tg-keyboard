@@ -19,7 +19,9 @@ use OutOfBoundsException;
 use RangeException;
 use Reymon\Keyboard\KeyboardInline;
 use Reymon\Keyboard\KeyboardMarkup;
+use Reymon\KeyboardButton\Poll\PollType;
 use Reymon\Mtproto\Type;
+use Reymon\Type\Chat\AdministratorRights;
 
 /**
  * @implements \IteratorAggregate<list<Button>>
@@ -187,17 +189,72 @@ abstract class Keyboard implements Type, \IteratorAggregate
                     } else {
                         $button = InlineButton::SwitchInline($text, $query);
                     }
+                } elseif ($button['_'] === 'inputKeyboardButtonRequestPeer') {
+                    $buttonId = $button['button_id'];
+                    $name  = isset($button['name_requested'])  ? $button['name_requested'] : null;
+                    $photo = isset($button['photo_requested']) ? $button['photo_requested'] : null;
+                    $username = isset($button['username_requested']) ? $button['username_requested'] : null;
+                    $userAdminRights = $button['peer_type']['user_admin_rights'] ?? null;
+                    $botAdminRights  = $button['peer_type']['bot_admin_rights']  ?? null;
+                    $button = match ($button['peer_type']['_']) {
+                        'requestPeerTypeUser' => KeyboardButton::RequestUsers(
+                            $text,
+                            $buttonId,
+                            isset($button['peer_type']['bot']) ? $button['peer_type']['bot'] : null,
+                            isset($button['peer_type']['premium']) ? $button['peer_type']['premium'] :null,
+                            $name,
+                            $photo,
+                            $username,
+                            $button['max_quantity'] ?? 1,
+                        ),
+                        'requestPeerTypeChat' => KeyboardButton::RequestGroup(
+                            $text,
+                            $buttonId,
+                            isset($button['peer_type']['creator']) ? $button['peer_type']['creator'] : null,
+                            isset($button['peer_type']['has_username']) ? $button['peer_type']['has_username'] : null,
+                            isset($button['peer_type']['forum']) ? $button['peer_type']['forum'] : null,
+                            isset($button['peer_type']['bot_participant']) ? $button['peer_type']['bot_participant'] : null,
+                            $name,
+                            $photo,
+                            $username,
+                            $userAdminRights ? AdministratorRights::fromMtproto($userAdminRights) : null,
+                            $botAdminRights  ? AdministratorRights::fromMtproto($botAdminRights)  : null,
+                        ),
+                        'requestPeerTypeBroadcast' => KeyboardButton::RequestChannel(
+                            $text,
+                            $buttonId,
+                            $button['peer_type']['creator'],
+                            $button['peer_type']['has_username'],
+                            null,
+                            $name,
+                            $photo,
+                            $username,
+                            $userAdminRights ? AdministratorRights::fromMtproto($userAdminRights) : null,
+                            $botAdminRights  ? AdministratorRights::fromMtproto($botAdminRights)  : null,
+                        )
+                    };
                 } else {
                     $button = match ($button['_']) {
+                        // Reply markup
+                        'keyboardButton'                   => KeyboardButton::Text($text),
                         'keyboardButtonRequestPhone'       => KeyboardButton::Phone($text),
                         'keyboardButtonRequestGeoLocation' => KeyboardButton::Location($text),
                         'keyboardButtonSimpleWebView'      => KeyboardButton::Webapp($text, $button['url']),
-                        'keyboardButtonUrl'                => InlineButton::Url($text, $button['url']),
-                        'keyboardButtonGame'               => InlineButton::Game($text),
-                        'keyboardButtonBuy'                => InlineButton::Buy($text),
-                        'keyboardButtonCallback'           => InlineButton::CallBack($text, $button['data']),
-                        'keyboardButtonWebView'            => InlineButton::Webapp($text, $button['url']),
-                        'keyboardButtonUrlAuth'            => InlineButton::Login(
+                        'keyboardButtonRequestPoll'        => KeyboardButton::Poll(
+                            $text,
+                            isset($button['quiz'])
+                                ? ($button['quiz'] ? PollType::QUIZ : PollType::REGULAR)
+                                : PollType::ALL
+                        ),
+                        // Inline markup
+                        'keyboardButtonGame'     => InlineButton::Game($text),
+                        'keyboardButtonBuy'      => InlineButton::Buy($text),
+                        'keyboardButtonUrl'      => InlineButton::Url($text, $button['url']),
+                        'keyboardButtonWebView'  => InlineButton::Webapp($text, $button['url']),
+                        'keyboardButtonCallback' => InlineButton::CallBack($text, $button['data']),
+                        'keyboardButtonCopy'     => InlineButton::CopyText($text, $button['copy_text']),
+                        'keyboardButtonUrlAuth',
+                        'inputKeyboardButtonUrlAuth' => InlineButton::LoginUrl(
                             $text,
                             $button['url'],
                             $button['fwd_text'] ?? null,
@@ -245,7 +302,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
                         $button['switch_inline_query_chosen_chat']['allow_group_chats']   ?? null,
                         $button['switch_inline_query_chosen_chat']['allow_channel_chats'] ?? null,
                     ),
-                    isset($button['login_url']) => InlineButton::Login(
+                    isset($button['login_url']) => InlineButton::LoginUrl(
                         $text,
                         $button['login_url']['url'],
                         $button['login_url']['forward_text'] ?? null,
