@@ -72,8 +72,8 @@ final class RequestChannel extends RequestPeer
                     'chat_has_username' => $this->hasUsername,
                     'chat_is_created'   => $this->creator,
                     'bot_is_member'     => $this->member,
-                    'user_admin_rights' => $this->userAdminRights->toApi(),
-                    'bot_admin_rights'  => $this->botAdminRights->toApi(),
+                    'user_admin_rights' => $this->userAdminRights?->toApi(),
+                    'bot_admin_rights'  => $this->botAdminRights?->toApi(),
                 ])
             ],
         );

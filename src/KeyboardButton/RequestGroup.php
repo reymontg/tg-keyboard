@@ -94,8 +94,8 @@ final class RequestGroup extends RequestPeer
                     'creator'           => $this->creator,
                     'has_username'      => $this->hasUsername,
                     'bot_participant'   => $this->member,
-                    'user_admin_rights' => $this->userAdminRights?->toApi(),
-                    'bot_admin_rights'  => $this->botAdminRights?->toApi()
+                    'user_admin_rights' => $this->userAdminRights?->toMtproto(),
+                    'bot_admin_rights'  => $this->botAdminRights?->toMtproto()
                 ]),
             ],
         );
