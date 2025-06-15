@@ -34,22 +34,37 @@ abstract class RequestPeer extends KeyboardButton
         return $this->buttonId;
     }
 
-    public function withName(?bool $name = null): self
+    public function setRequestName(?bool $name = null): self
     {
         $this->name = $name;
         return $this;
     }
 
-    public function withUsername(?bool $username = null): self
+    public function isRequestName(): bool
+    {
+        return $this->name;
+    }
+
+    public function setRequestUsername(?bool $username = null): self
     {
         $this->username = $username;
         return $this;
     }
 
-    public function withPhoto(?bool $photo = null): self
+    public function isRequestUsername(): bool
+    {
+        return $this->username;
+    }
+
+    public function setRequestPhoto(?bool $photo = null): self
     {
         $this->photo = $photo;
         return $this;
+    }
+
+    public function isRequestPhoto(): bool
+    {
+        return $this->photo;
     }
 
     #[\Override]
