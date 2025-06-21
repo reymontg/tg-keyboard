@@ -4,12 +4,12 @@
     "keywords"   : [
         "bot",
         "api",
-        "mtproto",
-        "madelineproto",
-        "keyboard",
-        "builder",
         "telegram",
-        "telegram-api"
+        "telegram-api",
+        "builder",
+        "keyboard",
+        "mtproto",
+        "madelineproto"
     ],
     "type"   : "library",
     "license": "GPL-3.0-only",
