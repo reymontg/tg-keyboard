@@ -149,28 +149,31 @@ You can even use these methods
 
 for InlineKeyboard:
 
-* [addCallback](src/Utils/EasyInline.php#L29)
-* [addCallbacks](src/Utils/EasyInline.php#L39)
-* [addWebApp](src/Utils/EasyInline.php#L55)
-* [addUrl](src/Utils/EasyInline.php#L66)
-* [addGame](src/Utils/EasyInline.php#L76)
-* [addBuy](src/Utils/EasyInline.php#L86)
-* [addSwitchInline](src/Utils/EasyInline.php#L98)
+* [addCallback](src/Keyboard/KeyboardInline.php#L37)
+* [addCallbacks](src/Keyboard/KeyboardInline.php#L47)
+* [addCopyText](src/Keyboard/KeyboardInline.php#L62)
+* [addUrl](src/Keyboard/KeyboardInline.php#L73)
+* [addWebApp](src/Keyboard/KeyboardInline.php#L84)
+* [addLoginUrl](src/Keyboard/KeyboardInline.php#L98)
+* [addGame](src/Keyboard/KeyboardInline.php#L108)
+* [addBuy](src/Keyboard/KeyboardInline.php#L118)
+* [addSwitchInline](src/Keyboard/KeyboardInline.php#L129)
+* [addSwitchInlineCurrent](src/Keyboard/KeyboardInline.php#L140)
+* [addSwitchInlineFilter](src/Keyboard/KeyboardInline.php#L155)
   
 and for ReplyKeyboard:
 
-* [addText(string $text)](src/Utils/EasyMarkup.php#L28)
-* [addTexts](src/Utils/EasyMarkup.php#L38)
-* [addProfile](src/Utils/EasyMarkup.php#L48)
-* [addWebApp](src/Utils/EasyMarkup.php#L59)
-* [requestPoll](src/Utils/EasyMarkup.php#L69)
-* [requestPollQuiz](src/Utils/EasyMarkup.php#L79)
-* [requestPollRegular](src/Utils/EasyMarkup.php#L89)
-* [requestLocation](src/Utils/EasyMarkup.php#L99)
-* [requestPhone](src/Utils/EasyMarkup.php#L109)
-* [requestUsers](src/Utils/EasyMarkup.php#L126)
-* [requestGroup](src/Utils/EasyMarkup.php#L146)
-* [requestChannel](src/Utils/EasyMarkup.php#L165)
+* [addText](src/Keyboard/KeyboardMarkup.php#L74)
+* [addTexts](src/Keyboard/KeyboardMarkup.php#L84)
+* [addWebApp](src/Keyboard/KeyboardMarkup.php#L99)
+* [requestPoll](src/Keyboard/KeyboardMarkup.php#L109)
+* [requestPollQuiz](src/Keyboard/KeyboardMarkup.php#L119)
+* [requestPollRegular](src/Keyboard/KeyboardMarkup.php#L129)
+* [requestLocation](src/Keyboard/KeyboardMarkup.php#L139)
+* [requestPhone](src/Keyboard/KeyboardMarkup.php#L149)
+* [requestUsers](src/Keyboard/KeyboardMarkup.php#L166)
+* [requestGroup](src/Keyboard/KeyboardMarkup.php#L186)
+* [requestChannel](src/Keyboard/KeyboardMarkup.php#L205)
 
 #### By Button
 
