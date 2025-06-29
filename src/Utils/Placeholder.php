@@ -12,9 +12,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Utils;
-
-use LengthException;
+namespace Reymon\Type\Utils;
 
 /**
  * @internal
@@ -28,12 +26,11 @@ trait Placeholder
      */
     public function placeholder(?string $placeholder = null): self
     {
-        $length = \mb_strlen($placeholder);
-        if (isset($placeholder) && $length >= 0 && $length <= 64) {
+        $length = \mb_strlen($placeholder ?? '');
+        if (\is_null($placeholder) || ($length >= 1 && $length <= 64)) {
             $this->placeholder = $placeholder;
-        } elseif ($placeholder != null) {
-            throw new LengthException('Maximum length is 64. ' . $length . ' given.');
+            return $this;
         }
-        return $this;
+        throw new \LengthException(\sprintf('Placeholder must be up to 1-256 characters. input has %d.', $length));
     }
 }
