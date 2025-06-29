@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Reymon\Keyboard\Test\Buttons;
+namespace Reymon\Type\Keyboard\Test\Buttons;
 
 use PHPUnit\Framework\TestCase;
-use Reymon\InlineButton;
+use Reymon\Type\Button\InlineButton;
 
 class InlineButtonsTest extends TestCase
 {

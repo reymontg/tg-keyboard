@@ -20,7 +20,7 @@ use Reymon\Type\Utils\Selective;
 use Reymon\Type\Utils\Placeholder;
 use Reymon\Type\Keyboard;
 use Reymon\Type\Chat\AdministratorRights;
-use Reymon\Type\Button\KeyboardButton\Poll\PollType;
+use Reymon\Type\Button\PollType;
 use Reymon\Type\Button\KeyboardButton;
 
 /**

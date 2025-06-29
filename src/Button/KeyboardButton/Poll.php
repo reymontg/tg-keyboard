@@ -15,7 +15,7 @@
 namespace Reymon\Type\Button\KeyboardButton;
 
 use Reymon\Type\Button\KeyboardButton;
-use Reymon\Type\Button\KeyboardButton\Poll\PollType;
+use Reymon\Type\Button\PollType;
 
 /**
  * Represents text button that request poll from user.

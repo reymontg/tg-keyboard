@@ -25,12 +25,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Reymon\\": "./src"
+            "Reymon\\Type\\": "./src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Reymon\\Keyboard\\Test\\": "./tests"
+            "Reymon\\Type\\Keyboard\\Test\\": "./tests"
         }
     },
     "require": {

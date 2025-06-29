@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Reymon\Keyboard\Test\Keyboards;
+namespace Reymon\Type\Keyboard\Test\Keyboards;
 
 use PHPUnit\Framework\TestCase;
-use Reymon\Keyboard\KeyboardHide;
+use Reymon\Type\Keyboard\KeyboardHide;
 
 class KeyboardHideTest extends TestCase
 {

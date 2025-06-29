@@ -21,7 +21,7 @@ use Reymon\Type\Button\KeyboardButton\Text;
 use Reymon\Type\Button\KeyboardButton\RequestUsers;
 use Reymon\Type\Button\KeyboardButton\RequestGroup;
 use Reymon\Type\Button\KeyboardButton\RequestChannel;
-use Reymon\Type\Button\KeyboardButton\Poll\PollType;
+use Reymon\Type\Button\PollType;
 use Reymon\Type\Button\KeyboardButton\Poll;
 use Reymon\Type\Button\KeyboardButton\Phone;
 use Reymon\Type\Button\KeyboardButton\Location;

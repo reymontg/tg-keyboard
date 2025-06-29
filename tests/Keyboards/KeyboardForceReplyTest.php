@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Reymon\Keyboard\Test\Keyboards;
+namespace Reymon\Type\Keyboard\Test\Keyboards;
 
-use Reymon\Keyboard\KeyboardForceReply;
-use Reymon\Keyboard\Test\Buttons\KeyboardButtonTest;
+use Reymon\Type\Keyboard\KeyboardForceReply;
+use Reymon\Type\Keyboard\Test\Buttons\KeyboardButtonTest;
 
 class KeyboardForceReplyTest extends KeyboardButtonTest
 {

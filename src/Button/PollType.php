@@ -13,7 +13,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Type\Button\KeyboardButton\Poll;
+namespace Reymon\Type\Button;
 
 use Reymon\Type;
 
