@@ -13,15 +13,15 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon;
+namespace Reymon\Type;
 
-use OutOfBoundsException;
-use RangeException;
-use Reymon\Keyboard\KeyboardInline;
-use Reymon\Keyboard\KeyboardMarkup;
-use Reymon\KeyboardButton\Poll\PollType;
-use Reymon\Mtproto\Type;
 use Reymon\Type\Chat\AdministratorRights;
+use Reymon\Mtproto\Type;
+use Reymon\Type\Keyboard\KeyboardMarkup;
+use Reymon\Type\Keyboard\KeyboardInline;
+use Reymon\Type\Button\KeyboardButton\Poll\PollType;
+use Reymon\Type\Button\KeyboardButton;
+use Reymon\Type\Button\InlineButton;
 
 /**
  * @implements \IteratorAggregate<list<Button>>
@@ -34,14 +34,6 @@ abstract class Keyboard implements Type, \IteratorAggregate
      * @var list<list<Button>>
      */
     private array $rows = [];
-
-    /**
-     * Create new tg-keyboard.
-     */
-    public static function new(): static
-    {
-        return new static;
-    }
 
     private function getRows(): array
     {
@@ -75,7 +67,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     /**
      * To replace a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
      *
-     * @throws OutOfBoundsException
+     * @throws \OutOfBoundsException
      */
     public function replaceIntoCoordinates(int $row, int $column, Button ...$button): self
     {
@@ -83,13 +75,13 @@ abstract class Keyboard implements Type, \IteratorAggregate
             \array_splice($this->rows[$row], $column, \count($button), $button);
             return $this;
         }
-        throw new OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
+        throw new \OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
     }
 
     /**
      * To remove button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
      *
-     * @throws OutOfBoundsException
+     * @throws \OutOfBoundsException
      */
     public function removeFromCoordinates(int $row, int $column, int $count = 1): self
     {
@@ -101,13 +93,13 @@ abstract class Keyboard implements Type, \IteratorAggregate
             }
             return $this;
         }
-        throw new OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
+        throw new \OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
     }
 
     /**
      * Remove the last button from keyboard.
      *
-     * @throws RangeException
+     * @throws \RangeException
      */
     public function remove(): self
     {
@@ -121,7 +113,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
             unset($this->rows[\end($endRow)][\end($endButton)]);
             return $this;
         }
-        throw new RangeException("Keyboard array is already empty!");
+        throw new \RangeException("Keyboard array is already empty!");
     }
 
     /**
@@ -161,15 +153,19 @@ abstract class Keyboard implements Type, \IteratorAggregate
      */
     public static function fromMtproto(array $replyMarkup): ?self
     {
-        if ($replyMarkup['_'] === 'replyKeyboardMarkup') {
-            $keyboard = new KeyboardMarkup;
-        } elseif ($replyMarkup['_'] === 'replyInlineMarkup') {
-            $keyboard = new KeyboardInline;
-        } else {
-            return null;
-        }
+        $keyboard = match ($replyMarkup['_']) {
+            'replyInlineMarkup'   => KeyboardInline::new(),
+            'replyKeyboardMarkup' => KeyboardMarkup::new(
+                $replyMarkup['resize']      ?? false,
+                $replyMarkup['single_use']  ?? false,
+                $replyMarkup['persistent']  ?? false,
+                $replyMarkup['selective']   ?? false,
+                $replyMarkup['placeholder'] ?? null,
+            ),
+            default => null,
+        };
 
-        foreach ($replyMarkup['rows'] as ['buttons' => $buttons]) {
+        foreach ($replyMarkup['rows'] ?? [] as ['buttons' => $buttons]) {
             foreach ($buttons as $button) {
                 $text  = $button['text'];
                 if ($button['_'] === 'keyboardButtonSwitchInline') {
@@ -277,12 +273,12 @@ abstract class Keyboard implements Type, \IteratorAggregate
      */
     public static function fromBotApi(array $replyMarkup): ?self
     {
-        $replyMarkup = $replyMarkup['inline_keyboard'] ?? false;
-        if (!$replyMarkup) {
+        if (!isset($replyMarkup['inline_keyboard'])) {
             return null;
         }
         $keyboard = new KeyboardInline;
-        foreach ($replyMarkup as $row) {
+
+        foreach ($replyMarkup['inline_keyboard'] as $row) {
             foreach ($row as $button) {
                 $text  = $button['text'];
                 $query = $button['switch_inline_query'] ?? $button['switch_inline_query_current_chat'] ?? $button['switch_inline_query_chosen_chat']['query'] ?? '';
@@ -319,29 +315,27 @@ abstract class Keyboard implements Type, \IteratorAggregate
     #[\Override]
     public function toApi(): array
     {
-        $rows = $this->getRows();
         return \array_map(
             fn (array $buttons) => \array_map(
                 fn (Button $button): array => $button->toApi(),
                 $buttons
             ),
-            $rows
+            $this->getRows()
         );
     }
 
     #[\Override]
     public function toMtproto(): array
     {
-        $rows = $this->getRows();
         return \array_map(
             fn (array $buttons) => [
                 '_' => 'keyboardButtonRow',
                 'buttons' => \array_map(
-                    fn (Button $button): array => $button->toApi(),
+                    fn (Button $button): array => $button->toMtproto(),
                     $buttons
                 )
             ],
-            $rows
+            $this->getRows()
         );
     }
 
