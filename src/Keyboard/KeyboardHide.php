@@ -13,12 +13,12 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Keyboard;
+namespace Reymon\Type\Keyboard;
 
-use Reymon\Button;
+use Reymon\Type\Button;
 use Reymon\Exception\KeyboardException;
-use Reymon\Keyboard;
-use Reymon\Utils\Selective;
+use Reymon\Type\Keyboard;
+use Reymon\Type\Utils\Selective;
 
 /**
  * Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard.
@@ -26,6 +26,14 @@ use Reymon\Utils\Selective;
 final class KeyboardHide extends Keyboard
 {
     use Selective;
+
+    /**
+     * @param bool $selective Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
+     */
+    public static function new(bool $selective = false): self
+    {
+        return (new self)->selective($selective);
+    }
 
     public function addButton(Button ...$button): Keyboard
     {

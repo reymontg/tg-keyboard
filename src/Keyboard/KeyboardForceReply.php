@@ -13,14 +13,14 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Keyboard;
+namespace Reymon\Type\Keyboard;
 
-use Reymon\Button;
+use Reymon\Type\Button;
 use Reymon\Exception\KeyboardException;
-use Reymon\Keyboard;
-use Reymon\Utils\Placeholder;
-use Reymon\Utils\Selective;
-use Reymon\Utils\SingleUse;
+use Reymon\Type\Keyboard;
+use Reymon\Type\Utils\Placeholder;
+use Reymon\Type\Utils\Selective;
+use Reymon\Type\Utils\SingleUse;
 
 /**
  * Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'.
@@ -28,6 +28,17 @@ use Reymon\Utils\SingleUse;
 final class KeyboardForceReply extends Keyboard
 {
     use Selective, Placeholder, SingleUse;
+
+    /**
+     * @param bool    $selective   Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
+     * @param ?string $placeholder The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
+     */
+    public static function new(bool $selective = false, ?string $placeholder = null): self
+    {
+        return (new static())
+            ->selective($selective)
+            ->placeholder($placeholder);
+    }
 
     public function addButton(Button ...$button): Keyboard
     {

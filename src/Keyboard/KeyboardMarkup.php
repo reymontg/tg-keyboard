@@ -13,23 +13,40 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Keyboard;
+namespace Reymon\Type\Keyboard;
 
-use Reymon\Keyboard;
-use Reymon\Utils\EasyMarkup;
-use Reymon\Utils\Placeholder;
-use Reymon\Utils\Selective;
-use Reymon\Utils\SingleUse;
+use Reymon\Type\Utils\SingleUse;
+use Reymon\Type\Utils\Selective;
+use Reymon\Type\Utils\Placeholder;
+use Reymon\Type\Keyboard;
+use Reymon\Type\Chat\AdministratorRights;
+use Reymon\Type\Button\KeyboardButton\Poll\PollType;
+use Reymon\Type\Button\KeyboardButton;
 
 /**
  * Represents a custom keyboard with reply options.
  */
 final class KeyboardMarkup extends Keyboard
 {
-    use Selective, Placeholder, SingleUse, EasyMarkup;
+    use Selective, Placeholder, SingleUse;
 
     private bool $resize = true;
     private bool $alwaysShow = false;
+
+    /**
+     * @param bool    $resize      Whether to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
+     * @param bool    $singleUse   Whether to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat - the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
+     * @param bool    $alwaysShow  Whether to always show the keyboard when the regular keyboard is hidden. Defaults to false, in which case the custom keyboard can be hidden and opened with a keyboard icon.
+     * @param bool    $selective   Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
+     * @param ?string $placeholder The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
+     */
+    public static function new(bool $resize = true, bool $singleUse = true, bool $alwaysShow = true, bool $selective = false, ?string $placeholder = null): self
+    {
+        return (new self)
+            ->resize($resize)
+            ->singleUse($singleUse)->selective($selective)
+            ->alwaysShow($alwaysShow)->placeholder($placeholder);
+    }
 
     /**
      * Whether to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
@@ -47,6 +64,147 @@ final class KeyboardMarkup extends Keyboard
     {
         $this->alwaysShow = $alwaysShow;
         return $this;
+    }
+
+    /**
+     * Create simple text keyboard.
+     *
+     * @param string $text Label text on the button
+     */
+    public function addText(string $text): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::Text($text));
+    }
+
+    /**
+     * Create simple texts keyboard.
+     *
+     * @param array ...$keyboards
+     */
+    public function addTexts(... $keyboards): KeyboardMarkup
+    {
+        \array_walk($keyboards, function ($row) {
+            \array_map($this->addText(...), \array_keys($row), $row);
+            $this->row();
+        });
+        return $this;
+    }
+
+    /**
+     * Create text button that open web app without requiring user information.
+     *
+     * @param string $text Label text on the button
+     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
+     */
+    public function addWebApp(string $text, string $url): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::WebApp($text, $url));
+    }
+
+    /**
+     * Create text button that request poll from user.
+     *
+     * @param string   $text Label text on the button
+     */
+    public function requestPoll(string $text, PollType $type = PollType::ALL): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::Poll($text, $type));
+    }
+
+    /**
+     * Create text button that request poll quiz from user.
+     *
+     * @param string   $text Label text on the button
+     */
+    public function requestPollQuiz(string $text): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::Poll($text, PollType::QUIZ));
+    }
+
+    /**
+     * Create text button that request poll regular from user.
+     *
+     * @param string   $text Label text on the button
+     */
+    public function requestPollRegular(string $text): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::Poll($text, PollType::REGULAR));
+    }
+
+    /**
+     * Create text button that request location from user.
+     *
+     * @param string $text Label text on the button
+     */
+    public function requestLocation(string $text): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::Location($text));
+    }
+
+    /**
+     * Create text button that request contact info from user.
+     *
+     * @param string $text Label text on the button
+     */
+    public function requestPhone(string $text): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::Phone($text));
+    }
+
+    /**
+     * Create a request peer user button.
+     *
+     * @param string $text     Label text on the button
+     * @param int    $buttonId Signed 32-bit identifier of the request
+     * @param ?bool  $bot      Whether to request bots or users, If not specified, no additional restrictions are applied.
+     * @param ?bool  $premium  Whether to request premium or non-premium users. If not specified, no additional restrictions are applied.
+     * @param bool   $name     Whether to request the users' first and last name
+     * @param bool   $username Whether to request the users' username
+     * @param bool   $photo    Whether to request the users' photo
+     * @param int    $max      The maximum number of users to be selected; 1-10.
+     */
+    public function requestUsers(string $text, int $buttonId, ?bool $bot = null, ?bool $premium = null, bool $name = false, bool $username = false, bool $photo = false, int $max = 1): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::RequestUsers($text, $buttonId, $bot, $premium, $name, $username, $photo, $max));
+    }
+
+    /**
+     * Create a request group button.
+     *
+     * @param string               $text            Label text on the button
+     * @param int                  $buttonId        Signed 32-bit identifier of the request
+     * @param ?bool                $creator         Whether to request a chat owned by the user.
+     * @param ?bool                $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
+     * @param ?bool                $forum           Whether to request a forum (or non-forum) supergroup.
+     * @param ?bool                $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+     * @param bool                 $name            Whether to request the chat's title
+     * @param bool                 $username        Whether to request the chat's username
+     * @param bool                 $photo           Whether to request the chat's photo
+     * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
+     * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     */
+    public function requestGroup(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::RequestGroup($text, $buttonId, $creator, $hasUsername, $forum, $member, $name, $username, $photo, $userAdminRights, $botAdminRights));
+    }
+
+    /**
+     * Create a request channel button.
+     *
+     * @param string               $text            Label text on the button
+     * @param int                  $buttonId        Signed 32-bit identifier of the request
+     * @param ?bool                $creator         Whether to request a chat owned by the user.
+     * @param ?bool                $hasUsername     Whether to request a supergroup or a channel with (or without) a username. If not specified, no additional restrictions are applied.
+     * @param ?bool                $member          Whether to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+     * @param bool                 $name            Whether to request the chat's title
+     * @param bool                 $username        Whether to request the chat's username
+     * @param bool                 $photo           Whether to request the chat's photo
+     * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
+     * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     */
+    public function requestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): KeyboardMarkup
+    {
+        return $this->addButton(KeyboardButton::RequestChannel($text, $buttonId, $creator, $hasUsername, $member, $name, $username, $photo, $botAdminRights, $userAdminRights));
     }
 
     #[\Override]
