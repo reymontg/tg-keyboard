@@ -12,17 +12,17 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\InlineButton;
-use Reymon\Utils\Url as ToolsUrl;
+use Reymon\Type\Button\InlineButton;
+use Reymon\Type\Utils\Url;
 
 /**
- * Represents inline button with url.
+ * Represents inline webapp button.
  */
-final class Url extends InlineButton
+final class Webapp extends InlineButton
 {
-    use ToolsUrl;
+    use Url;
 
     /**
      * @param string $text Label text on the button
@@ -34,10 +34,10 @@ final class Url extends InlineButton
     }
 
     /**
-     * Create Inline button with url.
+     * Create Inline webapp button.
      *
      * @param string $text Label text on the button
-     * @param string $url  HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
     public static function new(string $text, string $url): self
     {
@@ -49,7 +49,7 @@ final class Url extends InlineButton
     {
         return \array_merge(
             parent::toApi(),
-            ['url' => $this->url],
+            ['web_app' => ['url' => $this->url]],
         );
     }
 
@@ -58,7 +58,7 @@ final class Url extends InlineButton
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonUrl', 'url' => $this->url],
+            ['_' => 'keyboardButtonWebView', 'url' => $this->url],
         );
     }
 }

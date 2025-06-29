@@ -12,44 +12,44 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\InlineButton;
+use Reymon\Type\Button\InlineButton;
 
 /**
- * Represents inline button that switches the current user to inline mode in a chat.
+ * Represents inline button with callback data.
  */
-class SwitchInline extends InlineButton
+final class CallBack extends InlineButton
 {
     /**
-     * @param string $text   Label text on the button
-     * @param string $query  Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text     Label text on the button
+     * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
      */
-    public function __construct(string $text, protected string $query = '')
+    public function __construct(string $text, private string $callback)
     {
         parent::__construct($text);
     }
 
-    public function setQuery(string $query = ''): self
+    public function setCallback(string $callback): self
     {
-        $this->query = $query;
+        $this->callback = $callback;
         return $this;
     }
 
-    public function getQuery(string $query = ''): string
+    public function getCallback(): string
     {
-        return $this->query;
+        return $this->callback;
     }
 
     /**
-     * Create inline button that switches the current user to inline mode in a chat.
+     * Create inline button with callback data.
      *
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text     Label text on the button
+     * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
      */
-    public static function new(string $text, string $query): self
+    public static function new(string $text, string $callback): self
     {
-        return new static($text, $query);
+        return new static($text, $callback);
     }
 
     #[\Override]
@@ -57,7 +57,7 @@ class SwitchInline extends InlineButton
     {
         return \array_merge(
             parent::toApi(),
-            ['switch_inline_query' => $this->query],
+            ['callback_data' => $this->callback],
         );
     }
 
@@ -66,7 +66,7 @@ class SwitchInline extends InlineButton
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonSwitchInline', 'query' => $this->query],
+            ['_' => 'keyboardButtonCallback', 'data' => $this->callback],
         );
     }
 }

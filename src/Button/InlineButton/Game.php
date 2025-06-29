@@ -12,44 +12,31 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\KeyboardButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\KeyboardButton;
-use Reymon\KeyboardButton\Poll\PollType;
+use Reymon\Type\Button\InlineButton;
 
 /**
- * Represents text button that request poll from user.
+ * Represents game button for your inline game.
  */
-final class Poll extends KeyboardButton
+final class Game extends InlineButton
 {
     /**
      * @param string $text Label text on the button
      */
-    public function __construct(string $text, private PollType $type = PollType::ALL)
+    public function __construct(string $text)
     {
         parent::__construct($text);
     }
 
-    public function setPollType(PollType $type = PollType::ALL): self
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function getPollType(): PollType
-    {
-        return $this->type;
-    }
-
     /**
-     * Create text button that request poll from user.
+     * Create game button for your inline game.
      *
-     * @param string   $text Label text on the button
-     * @param PollType $type Type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+     * @param string $text Label text on the button
      */
-    public static function new(string $text, PollType $type = PollType::ALL): self
+    public static function new(string $text): self
     {
-        return new static($text, $type);
+        return new static($text);
     }
 
     #[\Override]
@@ -57,22 +44,16 @@ final class Poll extends KeyboardButton
     {
         return \array_merge(
             parent::toApi(),
-            ['request_poll' => $this->type->toApi()],
+            ['callback_game' => ''],
         );
     }
 
     #[\Override]
     public function toMtproto(): array
     {
-        $data = ['_' => 'keyboardButtonRequestPoll'];
-
-        if ($this->type === PollType::QUIZ) {
-            $data['quiz'] = true;
-        }
-
         return \array_merge(
             parent::toMtproto(),
-            $data,
+            ['_' => 'keyboardButtonGame'],
         );
     }
 }

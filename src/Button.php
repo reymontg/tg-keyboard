@@ -13,7 +13,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon;
+namespace Reymon\Type;
 
 use Reymon\Mtproto\Type;
 

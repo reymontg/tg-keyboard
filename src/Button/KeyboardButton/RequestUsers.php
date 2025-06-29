@@ -12,7 +12,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\KeyboardButton;
+namespace Reymon\Type\Button\KeyboardButton;
 
 /**
  * Represents button the criteria used to request suitable users. The identifiers of the selected users will be shared with the bot when the corresponding button is pressed.

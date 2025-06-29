@@ -12,44 +12,31 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\InlineButton;
+use Reymon\Type\Button\InlineButton;
 
 /**
- * Represents inline button with callback data.
+ * Represents buy button for your inline buy request(similar to webapps).
  */
-final class CallBack extends InlineButton
+final class Buy extends InlineButton
 {
     /**
-     * @param string $text     Label text on the button
-     * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+     * @param string $text Label text on the button
      */
-    public function __construct(string $text, private string $callback)
+    public function __construct(string $text)
     {
         parent::__construct($text);
     }
 
-    public function setCallback(string $callback): self
-    {
-        $this->callback = $callback;
-        return $this;
-    }
-
-    public function getCallback(): string
-    {
-        return $this->callback;
-    }
-
     /**
-     * Create inline button with callback data.
+     * Create a buy button for your inline buy request(similar to webapps).
      *
-     * @param string $text     Label text on the button
-     * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+     * @param string $text Label text on the button
      */
-    public static function new(string $text, string $callback): self
+    public static function new(string $text): self
     {
-        return new static($text, $callback);
+        return new static($text);
     }
 
     #[\Override]
@@ -57,7 +44,7 @@ final class CallBack extends InlineButton
     {
         return \array_merge(
             parent::toApi(),
-            ['callback_data' => $this->callback],
+            ['pay' => true],
         );
     }
 
@@ -66,7 +53,7 @@ final class CallBack extends InlineButton
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonCallback', 'data' => $this->callback],
+            ['_' => 'keyboardButtonBuy'],
         );
     }
 }

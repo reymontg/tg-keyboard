@@ -12,10 +12,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\KeyboardButton;
+namespace Reymon\Type\Button\KeyboardButton;
 
-use Reymon\KeyboardButton;
-use Reymon\Utils\Url;
+use Reymon\Type\Button\KeyboardButton;
+use Reymon\Type\Utils\Url;
 
 /**
  * Represents text button that open web app without requiring user information.

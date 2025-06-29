@@ -12,36 +12,31 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\KeyboardButton;
 
-use Reymon\InlineButton;
-use Reymon\Utils\Url;
+use Reymon\Type\Button\KeyboardButton;
 
 /**
- * Represents inline webapp button.
+ * Represents text button that request location from user.
  */
-final class Webapp extends InlineButton
+final class Location extends KeyboardButton
 {
-    use Url;
-
     /**
      * @param string $text Label text on the button
-     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
-    public function __construct(string $text, private string $url)
+    public function __construct(string $text)
     {
         parent::__construct($text);
     }
 
     /**
-     * Create Inline webapp button.
+     * Create text button that request location from user.
      *
      * @param string $text Label text on the button
-     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
-    public static function new(string $text, string $url): self
+    public static function new(string $text): self
     {
-        return new static($text, $url);
+        return new static($text);
     }
 
     #[\Override]
@@ -49,7 +44,7 @@ final class Webapp extends InlineButton
     {
         return \array_merge(
             parent::toApi(),
-            ['web_app' => ['url' => $this->url]],
+            ['request_location' => true],
         );
     }
 
@@ -58,7 +53,7 @@ final class Webapp extends InlineButton
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonWebView', 'url' => $this->url],
+            ['_' => 'keyboardButtonRequestGeoLocation'],
         );
     }
 }

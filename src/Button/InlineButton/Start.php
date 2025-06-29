@@ -12,9 +12,9 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\InlineButton;
+use Reymon\Type\Button\InlineButton;
 
 /**
  * Represents button to be shown above inline query results.

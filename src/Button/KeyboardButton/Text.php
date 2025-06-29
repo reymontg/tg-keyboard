@@ -7,16 +7,36 @@
  * See the GNU General Public License for more details.
  * If not, see <http://www.gnu.org/licenses/>.
  *
- * @author    Mahdi <mahdi.talaee1379@gmail.com>
  * @author    AhJ <AmirHosseinJafari8228@gmail.com>
  * @copyright Copyright (c) 2023, ReymonTg
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Exception;
+namespace Reymon\Type\Button\KeyboardButton;
 
-use Reymon\Exception;
+use Reymon\Type\Button\KeyboardButton;
 
-final class KeyboardException extends Exception
+/**
+ * Represents simple text keyboard.
+ */
+final class Text extends KeyboardButton
 {
+    /**
+     * Create simple text keyboard.
+     *
+     * @param string $text Label text on the button
+     */
+    public static function new(string $text): self
+    {
+        return new static($text);
+    }
+
+    #[\Override]
+    public function toMtproto(): array
+    {
+        return \array_merge(
+            parent::toMtproto(),
+            ['_' => 'keyboardButton'],
+        );
+    }
 }

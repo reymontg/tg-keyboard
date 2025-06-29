@@ -12,44 +12,36 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\InlineButton;
+use Reymon\Type\Button\InlineButton;
+use Reymon\Type\Utils\Url as ToolsUrl;
 
 /**
- * Rrepresents an inline button that copies specified text to the clipboard.
+ * Represents inline button with url.
  */
-final class CopyText extends InlineButton
+final class Url extends InlineButton
 {
+    use ToolsUrl;
+
     /**
-     * @param string $text     Label text on the button
-     * @param string $copyText The text to be copied to the clipboard; 1-256 characters
+     * @param string $text Label text on the button
+     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
-    public function __construct(string $text, private string $copyText)
+    public function __construct(string $text, private string $url)
     {
         parent::__construct($text);
     }
 
-    public function setCopyText(string $text): self
-    {
-        $this->copyText = $text;
-        return $this;
-    }
-
-    public function getCopyText(): string
-    {
-        return $this->copyText;
-    }
-
     /**
-     * Create inline button that copies specified text to the clipboard.
+     * Create Inline button with url.
      *
-     * @param string $text     Label text on the button
-     * @param string $copyText The text to be copied to the clipboard; 1-256 characters
+     * @param string $text Label text on the button
+     * @param string $url  HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
      */
-    public static function new(string $text, string $copyText): self
+    public static function new(string $text, string $url): self
     {
-        return new static($text, $copyText);
+        return new static($text, $url);
     }
 
     #[\Override]
@@ -57,7 +49,7 @@ final class CopyText extends InlineButton
     {
         return \array_merge(
             parent::toApi(),
-            ['copy_text' => ['text' => $this->copyText]],
+            ['url' => $this->url],
         );
     }
 
@@ -66,7 +58,7 @@ final class CopyText extends InlineButton
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonCopy', 'copy_text' => $this->copyText],
+            ['_' => 'keyboardButtonUrl', 'url' => $this->url],
         );
     }
 }

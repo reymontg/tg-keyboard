@@ -7,30 +7,42 @@
  * See the GNU General Public License for more details.
  * If not, see <http://www.gnu.org/licenses/>.
  *
- * @author    Mahdi <mahdi.talaee1379@gmail.com>
  * @author    AhJ <AmirHosseinJafari8228@gmail.com>
  * @copyright Copyright (c) 2023, ReymonTg
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
+
+use Reymon\Type\Button\InlineButton;
 
 /**
- * Represents inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
+ * Represents inline button that switches the current user to inline mode in a chat.
  */
-final class SwitchInlineCurrent extends SwitchInline
+class SwitchInline extends InlineButton
 {
     /**
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text   Label text on the button
+     * @param string $query  Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
      */
-    public function __construct(string $text, string $query = '')
+    public function __construct(string $text, protected string $query = '')
     {
-        parent::__construct($text, $query);
+        parent::__construct($text);
+    }
+
+    public function setQuery(string $query = ''): self
+    {
+        $this->query = $query;
+        return $this;
+    }
+
+    public function getQuery(string $query = ''): string
+    {
+        return $this->query;
     }
 
     /**
-     * Create inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
+     * Create inline button that switches the current user to inline mode in a chat.
      *
      * @param string $text  Label text on the button
      * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
@@ -43,7 +55,10 @@ final class SwitchInlineCurrent extends SwitchInline
     #[\Override]
     public function toApi(): array
     {
-        return ['switch_inline_query_current_chat' => $this->query, 'text' => $this->text];
+        return \array_merge(
+            parent::toApi(),
+            ['switch_inline_query' => $this->query],
+        );
     }
 
     #[\Override]
@@ -51,7 +66,7 @@ final class SwitchInlineCurrent extends SwitchInline
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonSwitchInline', 'query' => $this->query, 'same_peer' => true],
+            ['_' => 'keyboardButtonSwitchInline', 'query' => $this->query],
         );
     }
 }

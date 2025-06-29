@@ -12,10 +12,10 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\InlineButton;
+namespace Reymon\Type\Button\InlineButton;
 
-use Reymon\InlineButton;
-use Reymon\Utils\Url;
+use Reymon\Type\Button\InlineButton;
+use Reymon\Type\Utils\Url;
 
 /**
  * Represents inline button for login.

@@ -13,12 +13,21 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Utils;
+namespace Reymon\Type\Button;
 
-use Reymon\InlineButton;
-use Reymon\Keyboard\KeyboardInline;
+use Reymon\Type\Button\InlineButton\Webapp;
+use Reymon\Type\Button\InlineButton\Url;
+use Reymon\Type\Button\InlineButton\SwitchInlineFilter;
+use Reymon\Type\Button\InlineButton\SwitchInlineCurrent;
+use Reymon\Type\Button\InlineButton\SwitchInline;
+use Reymon\Type\Button\InlineButton\LoginUrl;
+use Reymon\Type\Button\InlineButton\Game;
+use Reymon\Type\Button\InlineButton\CopyText;
+use Reymon\Type\Button\InlineButton\CallBack;
+use Reymon\Type\Button\InlineButton\Buy;
+use Reymon\Type\Button;
 
-trait EasyInline
+abstract class InlineButton extends Button
 {
     /**
      * Create inline button with callback data.
@@ -26,24 +35,9 @@ trait EasyInline
      * @param string $text     Label text on the button
      * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
      */
-    public function addCallback(string $text, string $callback): KeyboardInline
+    public static function CallBack(string $text, string $callback): CallBack
     {
-        return $this->addButton(InlineButton::CallBack($text, $callback));
-    }
-
-    /**
-     * Create inline buttons with callback data.
-     *
-     * @param array ...$keyboards
-     */
-    public function addCallbacks(... $keyboards): KeyboardInline
-    {
-        $callabe = function (array $row): void {
-            \array_map($this->addCallback(...), \array_keys($row), $row);
-            $this->row();
-        };
-        \array_map($callabe, $keyboards);
-        return $this;
+        return new CallBack($text, $callback);
     }
 
     /**
@@ -52,9 +46,9 @@ trait EasyInline
      * @param string $text     Label text on the button
      * @param string $copyText The text to be copied to the clipboard; 1-256 characters
      */
-    public function addCopyText(string $text, string $copyText): KeyboardInline
+    public static function CopyText(string $text, string $copyText): CopyText
     {
-        return $this->addButton(InlineButton::CopyText($text, $copyText));
+        return new CopyText($text, $copyText);
     }
 
     /**
@@ -63,9 +57,9 @@ trait EasyInline
      * @param string $text Label text on the button
      * @param string $url  HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
      */
-    public function addUrl(string $text, string $url): KeyboardInline
+    public static function Url(string $text, string $url): Url
     {
-        return $this->addButton(InlineButton::Url($text, $url));
+        return new Url($text, $url);
     }
 
     /**
@@ -74,9 +68,9 @@ trait EasyInline
      * @param string $text Label text on the button
      * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
-    public function addWebApp(string $text, string $url): KeyboardInline
+    public static function Webapp(string $text, string $url): Webapp
     {
-        return $this->addButton(InlineButton::WebApp($text, $url));
+        return new Webapp($text, $url);
     }
 
     /**
@@ -88,9 +82,9 @@ trait EasyInline
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public function addLoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): KeyboardInline
+    public static function LoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): LoginUrl
     {
-        return $this->addButton(InlineButton::LoginUrl($text, $url, $forwardText, $username, $writeAccess));
+        return new LoginUrl($text, $url, $forwardText, $username, $writeAccess);
     }
 
     /**
@@ -98,9 +92,9 @@ trait EasyInline
      *
      * @param string $text Label text on the button
      */
-    public function addGame(string $text): KeyboardInline
+    public static function Game(string $text): Game
     {
-        return $this->addButton(InlineButton::Game($text));
+        return new Game($text);
     }
 
     /**
@@ -108,20 +102,19 @@ trait EasyInline
      *
      * @param string $text Label text on the button
      */
-    public function addBuy(string $text): KeyboardInline
+    public static function Buy(string $text): Buy
     {
-        return $this->addButton(InlineButton::Buy($text));
+        return new Buy($text);
     }
-
     /**
      * Create inline button that switches the current user to inline mode in a chat.
      *
      * @param string $text  Label text on the button
      * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
      */
-    public function addSwitchInline(string $text, string $query): KeyboardInline
+    public static function SwitchInline(string $text, string $query): SwitchInline
     {
-        return $this->addButton(InlineButton::SwitchInline($text, $query));
+        return new SwitchInline($text, $query);
     }
 
     /**
@@ -130,9 +123,9 @@ trait EasyInline
      * @param string $text  Label text on the button
      * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
      */
-    public function addSwitchInlineCurrent(string $text, string $query): KeyboardInline
+    public static function SwitchInlineCurrent(string $text, string $query): SwitchInlineCurrent
     {
-        return $this->addButton(InlineButton::SwitchInlineCurrent($text, $query));
+        return new SwitchInlineCurrent($text, $query);
     }
 
     /**
@@ -145,8 +138,8 @@ trait EasyInline
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
      * @param bool|null $allowChannels Whether channel chats can be chosen
      */
-    public function addSwitchInlineFilter(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): KeyboardInline
+    public static function SwitchInlineFilter(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): SwitchInlineFilter
     {
-        return $this->addButton(InlineButton::SwitchInlineFilter($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels));
+        return new SwitchInlineFilter($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels);
     }
 }

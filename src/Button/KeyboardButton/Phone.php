@@ -12,14 +12,14 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\KeyboardButton;
+namespace Reymon\Type\Button\KeyboardButton;
 
-use Reymon\KeyboardButton;
+use Reymon\Type\Button\KeyboardButton;
 
 /**
- * Represents text button that request location from user.
+ * Represents text button that request contact info from user.
  */
-final class Location extends KeyboardButton
+final class Phone extends KeyboardButton
 {
     /**
      * @param string $text Label text on the button
@@ -30,7 +30,7 @@ final class Location extends KeyboardButton
     }
 
     /**
-     * Create text button that request location from user.
+     * Create text button that request contact info from user.
      *
      * @param string $text Label text on the button
      */
@@ -44,7 +44,7 @@ final class Location extends KeyboardButton
     {
         return \array_merge(
             parent::toApi(),
-            ['request_location' => true],
+            ['request_contact' => true],
         );
     }
 
@@ -53,7 +53,7 @@ final class Location extends KeyboardButton
     {
         return \array_merge(
             parent::toMtproto(),
-            ['_' => 'keyboardButtonRequestGeoLocation'],
+            ['_' => 'keyboardButtonRequestPhone'],
         );
     }
 }
