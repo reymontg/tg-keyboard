@@ -15,17 +15,17 @@
 
 namespace Reymon\Type\Button;
 
-use Reymon\Type\Button\InlineButton\Webapp;
-use Reymon\Type\Button\InlineButton\Url;
-use Reymon\Type\Button\InlineButton\SwitchInlineFilter;
-use Reymon\Type\Button\InlineButton\SwitchInlineCurrent;
-use Reymon\Type\Button\InlineButton\SwitchInline;
-use Reymon\Type\Button\InlineButton\LoginUrl;
-use Reymon\Type\Button\InlineButton\Game;
-use Reymon\Type\Button\InlineButton\CopyText;
-use Reymon\Type\Button\InlineButton\CallBack;
-use Reymon\Type\Button\InlineButton\Buy;
 use Reymon\Type\Button;
+use Reymon\Type\Button\InlineButton\Buy;
+use Reymon\Type\Button\InlineButton\CallBack;
+use Reymon\Type\Button\InlineButton\CopyText;
+use Reymon\Type\Button\InlineButton\Game;
+use Reymon\Type\Button\InlineButton\LoginUrl;
+use Reymon\Type\Button\InlineButton\SwitchInline;
+use Reymon\Type\Button\InlineButton\SwitchInlineCurrent;
+use Reymon\Type\Button\InlineButton\SwitchInlineFilter;
+use Reymon\Type\Button\InlineButton\Url;
+use Reymon\Type\Button\InlineButton\Webapp;
 
 abstract class InlineButton extends Button
 {

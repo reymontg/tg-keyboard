@@ -15,13 +15,13 @@
 
 namespace Reymon\Type\Keyboard;
 
-use Reymon\Type\Utils\SingleUse;
-use Reymon\Type\Utils\Selective;
-use Reymon\Type\Utils\Placeholder;
-use Reymon\Type\Keyboard;
-use Reymon\Type\Chat\AdministratorRights;
-use Reymon\Type\Button\PollType;
 use Reymon\Type\Button\KeyboardButton;
+use Reymon\Type\Button\PollType;
+use Reymon\Type\Chat\AdministratorRights;
+use Reymon\Type\Keyboard;
+use Reymon\Type\Utils\Placeholder;
+use Reymon\Type\Utils\Selective;
+use Reymon\Type\Utils\SingleUse;
 
 /**
  * Represents a custom keyboard with reply options.

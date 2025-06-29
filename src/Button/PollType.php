@@ -20,17 +20,17 @@ use Reymon\Type;
 enum PollType: string implements Type
 {
     /**
-     * Create a poll of any type
+     * Create a poll of any type.
      */
     case ALL = '';
 
     /**
-     * Create only polls in the quiz mode
+     * Create only polls in the quiz mode.
      */
     case QUIZ = 'quiz';
 
     /**
-     * Create regular polls
+     * Create regular polls.
      */
     case REGULAR = 'regular';
 

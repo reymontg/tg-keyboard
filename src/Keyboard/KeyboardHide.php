@@ -15,8 +15,8 @@
 
 namespace Reymon\Type\Keyboard;
 
-use Reymon\Type\Button;
 use Reymon\Exception\KeyboardException;
+use Reymon\Type\Button;
 use Reymon\Type\Keyboard;
 use Reymon\Type\Utils\Selective;
 

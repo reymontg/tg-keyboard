@@ -15,8 +15,8 @@
 
 namespace Reymon\Type\Keyboard;
 
-use Reymon\Type\Keyboard;
 use Reymon\Type\Button\InlineButton;
+use Reymon\Type\Keyboard;
 
 /**
  * Represents an inline keyboard that appears right next to the message it belongs to.

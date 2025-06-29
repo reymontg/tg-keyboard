@@ -15,17 +15,16 @@
 
 namespace Reymon\Type\Button;
 
-use Reymon\Type\Chat\AdministratorRights;
-use Reymon\Type\Button\KeyboardButton\Webapp;
-use Reymon\Type\Button\KeyboardButton\Text;
-use Reymon\Type\Button\KeyboardButton\RequestUsers;
-use Reymon\Type\Button\KeyboardButton\RequestGroup;
-use Reymon\Type\Button\KeyboardButton\RequestChannel;
-use Reymon\Type\Button\PollType;
-use Reymon\Type\Button\KeyboardButton\Poll;
-use Reymon\Type\Button\KeyboardButton\Phone;
-use Reymon\Type\Button\KeyboardButton\Location;
 use Reymon\Type\Button;
+use Reymon\Type\Button\KeyboardButton\Location;
+use Reymon\Type\Button\KeyboardButton\Phone;
+use Reymon\Type\Button\KeyboardButton\Poll;
+use Reymon\Type\Button\KeyboardButton\RequestChannel;
+use Reymon\Type\Button\KeyboardButton\RequestGroup;
+use Reymon\Type\Button\KeyboardButton\RequestUsers;
+use Reymon\Type\Button\KeyboardButton\Text;
+use Reymon\Type\Button\KeyboardButton\Webapp;
+use Reymon\Type\Chat\AdministratorRights;
 
 abstract class KeyboardButton extends Button
 {

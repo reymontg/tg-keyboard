@@ -15,13 +15,13 @@
 
 namespace Reymon\Type;
 
-use Reymon\Type\Chat\AdministratorRights;
 use Reymon\Mtproto\Type;
-use Reymon\Type\Keyboard\KeyboardMarkup;
-use Reymon\Type\Keyboard\KeyboardInline;
-use Reymon\Type\Button\PollType;
-use Reymon\Type\Button\KeyboardButton;
 use Reymon\Type\Button\InlineButton;
+use Reymon\Type\Button\KeyboardButton;
+use Reymon\Type\Button\PollType;
+use Reymon\Type\Chat\AdministratorRights;
+use Reymon\Type\Keyboard\KeyboardInline;
+use Reymon\Type\Keyboard\KeyboardMarkup;
 
 /**
  * @implements \IteratorAggregate<list<Button>>
