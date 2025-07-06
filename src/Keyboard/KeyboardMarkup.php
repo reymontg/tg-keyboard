@@ -25,6 +25,8 @@ use Reymon\Type\Utils\SingleUse;
 
 /**
  * Represents a custom keyboard with reply options.
+ *
+ * @template TButton of KeyboardButton
  */
 final class KeyboardMarkup extends Keyboard
 {
@@ -44,8 +46,10 @@ final class KeyboardMarkup extends Keyboard
     {
         return (new self)
             ->resize($resize)
-            ->singleUse($singleUse)->selective($selective)
-            ->alwaysShow($alwaysShow)->placeholder($placeholder);
+            ->singleUse($singleUse)
+            ->selective($selective)
+            ->alwaysShow($alwaysShow)
+            ->placeholder($placeholder);
     }
 
     /**
@@ -71,7 +75,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text Label text on the button
      */
-    public function addText(string $text): KeyboardMarkup
+    public function addText(string $text): self
     {
         return $this->addButton(KeyboardButton::Text($text));
     }
@@ -81,7 +85,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param array ...$keyboards
      */
-    public function addTexts(... $keyboards): KeyboardMarkup
+    public function addTexts(... $keyboards): self
     {
         \array_walk($keyboards, function ($row) {
             \array_map($this->addText(...), \array_keys($row), $row);
@@ -96,7 +100,7 @@ final class KeyboardMarkup extends Keyboard
      * @param string $text Label text on the button
      * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
-    public function addWebApp(string $text, string $url): KeyboardMarkup
+    public function addWebApp(string $text, string $url): self
     {
         return $this->addButton(KeyboardButton::WebApp($text, $url));
     }
@@ -106,7 +110,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string   $text Label text on the button
      */
-    public function requestPoll(string $text, PollType $type = PollType::ALL): KeyboardMarkup
+    public function requestPoll(string $text, PollType $type = PollType::ALL): self
     {
         return $this->addButton(KeyboardButton::Poll($text, $type));
     }
@@ -116,7 +120,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string   $text Label text on the button
      */
-    public function requestPollQuiz(string $text): KeyboardMarkup
+    public function requestPollQuiz(string $text): self
     {
         return $this->addButton(KeyboardButton::Poll($text, PollType::QUIZ));
     }
@@ -126,7 +130,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string   $text Label text on the button
      */
-    public function requestPollRegular(string $text): KeyboardMarkup
+    public function requestPollRegular(string $text): self
     {
         return $this->addButton(KeyboardButton::Poll($text, PollType::REGULAR));
     }
@@ -136,7 +140,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text Label text on the button
      */
-    public function requestLocation(string $text): KeyboardMarkup
+    public function requestLocation(string $text): self
     {
         return $this->addButton(KeyboardButton::Location($text));
     }
@@ -146,7 +150,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text Label text on the button
      */
-    public function requestPhone(string $text): KeyboardMarkup
+    public function requestPhone(string $text): self
     {
         return $this->addButton(KeyboardButton::Phone($text));
     }
@@ -163,7 +167,7 @@ final class KeyboardMarkup extends Keyboard
      * @param bool   $photo    Whether to request the users' photo
      * @param int    $max      The maximum number of users to be selected; 1-10.
      */
-    public function requestUsers(string $text, int $buttonId, ?bool $bot = null, ?bool $premium = null, bool $name = false, bool $username = false, bool $photo = false, int $max = 1): KeyboardMarkup
+    public function requestUsers(string $text, int $buttonId, ?bool $bot = null, ?bool $premium = null, bool $name = false, bool $username = false, bool $photo = false, int $max = 1): self
     {
         return $this->addButton(KeyboardButton::RequestUsers($text, $buttonId, $bot, $premium, $name, $username, $photo, $max));
     }
@@ -183,7 +187,7 @@ final class KeyboardMarkup extends Keyboard
      * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
      * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      */
-    public function requestGroup(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): KeyboardMarkup
+    public function requestGroup(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): self
     {
         return $this->addButton(KeyboardButton::RequestGroup($text, $buttonId, $creator, $hasUsername, $forum, $member, $name, $username, $photo, $userAdminRights, $botAdminRights));
     }
@@ -202,7 +206,7 @@ final class KeyboardMarkup extends Keyboard
      * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
      * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      */
-    public function requestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): KeyboardMarkup
+    public function requestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): self
     {
         return $this->addButton(KeyboardButton::RequestChannel($text, $buttonId, $creator, $hasUsername, $member, $name, $username, $photo, $botAdminRights, $userAdminRights));
     }

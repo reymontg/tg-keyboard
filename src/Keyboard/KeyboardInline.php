@@ -15,11 +15,13 @@
 
 namespace Reymon\Type\Keyboard;
 
-use Reymon\Type\Button\InlineButton;
 use Reymon\Type\Keyboard;
+use Reymon\Type\Button\InlineButton;
 
 /**
  * Represents an inline keyboard that appears right next to the message it belongs to.
+ *
+ * @template TButton of InlineButton
  */
 final class KeyboardInline extends Keyboard
 {
@@ -34,19 +36,17 @@ final class KeyboardInline extends Keyboard
      * @param string $text     Label text on the button
      * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
      */
-    public function addCallback(string $text, string $callback): KeyboardInline
+    public function addCallback(string $text, string $callback): self
     {
         return $this->addButton(InlineButton::CallBack($text, $callback));
     }
 
     /**
      * Create inline buttons with callback data.
-     *
-     * @param array ...$keyboards
      */
-    public function addCallbacks(... $keyboards): KeyboardInline
+    public function addCallbacks(... $rows): self
     {
-        \array_walk($keyboards, function ($row) {
+        \array_walk($rows, function ($row) {
             \array_map($this->addCallback(...), \array_keys($row), $row);
             $this->row();
         });
@@ -59,7 +59,7 @@ final class KeyboardInline extends Keyboard
      * @param string $text     Label text on the button
      * @param string $copyText The text to be copied to the clipboard; 1-256 characters
      */
-    public function addCopyText(string $text, string $copyText): KeyboardInline
+    public function addCopyText(string $text, string $copyText): self
     {
         return $this->addButton(InlineButton::CopyText($text, $copyText));
     }
@@ -70,9 +70,21 @@ final class KeyboardInline extends Keyboard
      * @param string $text Label text on the button
      * @param string $url  HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
      */
-    public function addUrl(string $text, string $url): KeyboardInline
+    public function addUrl(string $text, string $url): self
     {
         return $this->addButton(InlineButton::Url($text, $url));
+    }
+
+    /**
+     * Create Inline buttons with url.
+     */
+    public function addUrls(... $rows): self
+    {
+        \array_walk($rows, function ($row) {
+            \array_map($this->addCallback(...), \array_keys($row), $row);
+            $this->row();
+        });
+        return $this;
     }
 
     /**
@@ -81,7 +93,7 @@ final class KeyboardInline extends Keyboard
      * @param string $text Label text on the button
      * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      */
-    public function addWebApp(string $text, string $url): KeyboardInline
+    public function addWebApp(string $text, string $url): self
     {
         return $this->addButton(InlineButton::WebApp($text, $url));
     }
@@ -95,7 +107,7 @@ final class KeyboardInline extends Keyboard
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      */
-    public function addLoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): KeyboardInline
+    public function addLoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): self
     {
         return $this->addButton(InlineButton::LoginUrl($text, $url, $forwardText, $username, $writeAccess));
     }
@@ -105,7 +117,7 @@ final class KeyboardInline extends Keyboard
      *
      * @param string $text Label text on the button
      */
-    public function addGame(string $text): KeyboardInline
+    public function addGame(string $text): self
     {
         return $this->addButton(InlineButton::Game($text));
     }
@@ -115,7 +127,7 @@ final class KeyboardInline extends Keyboard
      *
      * @param string $text Label text on the button
      */
-    public function addBuy(string $text): KeyboardInline
+    public function addBuy(string $text): self
     {
         return $this->addButton(InlineButton::Buy($text));
     }
@@ -126,9 +138,21 @@ final class KeyboardInline extends Keyboard
      * @param string $text  Label text on the button
      * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
      */
-    public function addSwitchInline(string $text, string $query): KeyboardInline
+    public function addSwitchInline(string $text, string $query): self
     {
         return $this->addButton(InlineButton::SwitchInline($text, $query));
+    }
+
+    /**
+     * Create inline buttons that switches the current user to inline mode in a chat.
+     */
+    public function addSwitchInlines(... $rows): self
+    {
+        \array_walk($rows, function ($row) {
+            \array_map($this->addSwitchInline(...), \array_keys($row), $row);
+            $this->row();
+        });
+        return $this;
     }
 
     /**
@@ -137,9 +161,18 @@ final class KeyboardInline extends Keyboard
      * @param string $text  Label text on the button
      * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
      */
-    public function addSwitchInlineCurrent(string $text, string $query): KeyboardInline
+    public function addSwitchInlineCurrent(string $text, string $query): self
     {
         return $this->addButton(InlineButton::SwitchInlineCurrent($text, $query));
+    }
+
+    public function addSwitchInlinesCurrent(... $rows): self
+    {
+        \array_walk($rows, function ($row) {
+            \array_map($this->addSwitchInlineCurrent(...), \array_keys($row), $row);
+            $this->row();
+        });
+        return $this;
     }
 
     /**
@@ -152,7 +185,7 @@ final class KeyboardInline extends Keyboard
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
      * @param bool|null $allowChannels Whether channel chats can be chosen
      */
-    public function addSwitchInlineFilter(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): KeyboardInline
+    public function addSwitchInlineFilter(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): self
     {
         return $this->addButton(InlineButton::SwitchInlineFilter($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels));
     }

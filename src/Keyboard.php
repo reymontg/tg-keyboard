@@ -24,7 +24,8 @@ use Reymon\Type\Keyboard\KeyboardInline;
 use Reymon\Type\Keyboard\KeyboardMarkup;
 
 /**
- * @implements \IteratorAggregate<list<Button>>
+ * @template TButton
+ * @implements \IteratorAggregate<array<TButton>>
  */
 abstract class Keyboard implements Type, \IteratorAggregate
 {
