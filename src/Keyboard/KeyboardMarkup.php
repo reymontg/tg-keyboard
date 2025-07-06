@@ -83,12 +83,12 @@ final class KeyboardMarkup extends Keyboard
     /**
      * Create simple texts keyboard.
      *
-     * @param array ...$keyboards
+     * @param array ...$buttons
      */
-    public function addTexts(... $keyboards): self
+    public function addTexts(... $buttons): self
     {
-        \array_walk($keyboards, function ($row) {
-            \array_map($this->addText(...), \array_keys($row), $row);
+        \array_walk($buttons, function ($row) {
+            \array_map($this->addText(...), $row);
             $this->row();
         });
         return $this;
