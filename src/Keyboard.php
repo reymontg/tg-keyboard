@@ -119,9 +119,8 @@ abstract class Keyboard implements Type, \IteratorAggregate
 
     /**
      * Add a new raw with specified button ( pass null to only add new row).
-     *
      */
-    public function row(?Button ...$button): self
+    public function row(?Button ...$button): static
     {
         $row = &$this->rows[$this->index];
 
