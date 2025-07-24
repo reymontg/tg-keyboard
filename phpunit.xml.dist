@@ -14,8 +14,7 @@
     >
     <testsuites>
         <testsuite name="Reymon Tg-Keyboard">
-            <directory>test</directory>
-            <directory suffix=".phpt">tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <coverage>
