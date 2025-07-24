@@ -5,8 +5,8 @@ export default defineConfig({
     // site-level options
     title : 'Tg Keyboard',
     base : '/tgkeyboard/',
+    srcDir: './docs',
     description: 'An easy keyboard builder for Telegram Api & Mtproto syntax.',
-
     themeConfig: {
         // theme-level options
     }
