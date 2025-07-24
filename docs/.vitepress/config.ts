@@ -1,4 +1,7 @@
-export default {
+import {defineConfig} from 'vitepress'
+
+// https://vitepress.dev/reference/site-config
+export default defineConfig({
     // site-level options
     title : 'Tg Keyboard',
     base : '/tgkeyboard/',
@@ -7,4 +10,4 @@ export default {
     themeConfig: {
         // theme-level options
     }
-}
+})
