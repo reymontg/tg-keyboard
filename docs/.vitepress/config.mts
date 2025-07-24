@@ -4,7 +4,7 @@ import {defineConfig} from 'vitepress'
 export default defineConfig({
     // site-level options
     title : 'Tg Keyboard',
-    base : '/tgkeyboard/',
+    base  : '/tg-keyboard/',
     srcDir: './docs',
     description: 'An easy keyboard builder for Telegram Api & Mtproto syntax.',
     themeConfig: {
