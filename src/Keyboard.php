@@ -20,6 +20,8 @@ use Reymon\Type\Button\InlineButton;
 use Reymon\Type\Button\KeyboardButton;
 use Reymon\Type\Button\PollType;
 use Reymon\Type\Chat\AdministratorRights;
+use Reymon\Type\Keyboard\KeyboardForceReply;
+use Reymon\Type\Keyboard\KeyboardHide;
 use Reymon\Type\Keyboard\KeyboardInline;
 use Reymon\Type\Keyboard\KeyboardMarkup;
 
@@ -52,6 +54,23 @@ abstract class Keyboard implements Type, \IteratorAggregate
     {
         $row = &$this->rows[$this->index];
         $row = \array_merge($row ?? [], $button);
+        return $this;
+    }
+
+    /**
+     * Apply the callback if the given "value" is (or resolves to) truthy.
+     *
+     * @param \Closure($this)|null $callback
+     * @param \Closure($this)|null $default
+     */
+    public function when($value, ?\Closure $callback = null, ?\Closure $default = null): self
+    {
+        if ($value) {
+            $callback($this, $value);
+        } elseif ($default) {
+            return $default($this, $value);
+        }
+
         return $this;
     }
 
@@ -153,14 +172,17 @@ abstract class Keyboard implements Type, \IteratorAggregate
      */
     public static function fromMtproto(array $replyMarkup): ?self
     {
+        $selective = $replyMarkup['selective'] ?? false;
+        $placeholder = $replyMarkup['placeholder'] ?? null;
         $keyboard = match ($replyMarkup['_']) {
-            'replyInlineMarkup'   => KeyboardInline::new(),
-            'replyKeyboardMarkup' => KeyboardMarkup::new(
+            'replyInlineMarkup'       => KeyboardInline::new(),
+            'replyKeyboardHide'       => KeyboardHide::new($selective),
+            'replyKeyboardForceReply' => KeyboardForceReply::new($selective, $placeholder),
+            'replyKeyboardMarkup'     => KeyboardMarkup::new(
                 $replyMarkup['resize']      ?? false,
                 $replyMarkup['single_use']  ?? false,
                 $replyMarkup['persistent']  ?? false,
-                $replyMarkup['selective']   ?? false,
-                $replyMarkup['placeholder'] ?? null,
+                $selective, $placeholder
             ),
             default => null,
         };
