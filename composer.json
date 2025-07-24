@@ -50,6 +50,6 @@
         ],
         "cs"    : "PHP_CS_FIXER_IGNORE_ENV=1 php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff --dry-run",
         "cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php -d pcre.jit=0 vendor/bin/php-cs-fixer fix -v --diff",
-        "test"  : "php -d zend.assertions=1 -d assert.exception=1 ./vendor/bin/phpunit --coverage-text"
+        "test"  : "php -d zend.assertions=1 -d assert.exception=1 ./vendor/bin/phpunit"
     }
 }
