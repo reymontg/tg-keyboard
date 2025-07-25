@@ -81,7 +81,7 @@ final class KeyboardInline extends Keyboard
     public function addUrls(... $rows): self
     {
         \array_walk($rows, function ($row) {
-            \array_map($this->addCallback(...), \array_keys($row), $row);
+            \array_map($this->addUrl(...), \array_keys($row), $row);
             $this->row();
         });
         return $this;
@@ -200,7 +200,7 @@ final class KeyboardInline extends Keyboard
     public function toMtproto(): array
     {
         return [
-            '_'    => 'replyInlineMarkup',
+            '_' => 'replyInlineMarkup',
             'rows' => parent::toMtproto(),
         ];
     }
