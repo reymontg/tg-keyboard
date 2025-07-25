@@ -78,4 +78,4 @@ jobs:
       - name: Run style fixer
         env:
           PHP_CS_FIXER_IGNORE_ENV: 1
-        run: composer cs-fix
+        run: vendor/bin/php-cs-fixer --diff --dry-run -v fix
