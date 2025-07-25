@@ -45,9 +45,9 @@
     },
     "archive": {
         "exclude": [
-            "docs",
-            "tests",
-            "assets",
+            "/docs/*",
+            "/tests/*",
+            "/assets/*",
             "phpunit.xml",
             ".gitignore",
             ".gitattributes",
