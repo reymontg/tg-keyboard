@@ -43,6 +43,18 @@
         "phpunit/phpunit"          : "^12",
         "amphp/php-cs-fixer-config": "^2"
     },
+    "archive": {
+        "exclude": [
+            "*.md",
+            "/docs",
+            "/tests",
+            "/assets",
+            "phpunit.xml",
+            ".gitignore",
+            ".gitattributes",
+            ".php-cs-fixer.dist.php"
+        ]
+    },
     "scripts": {
         "build": [
             "@cs-fix",
