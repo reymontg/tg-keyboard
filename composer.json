@@ -45,13 +45,13 @@
     },
     "archive": {
         "exclude": [
-            "/docs",
-            "/tests",
-            "/assets",
-            "/phpunit.xml",
-            "/.gitignore",
-            "/.gitattributes",
-            "/.php-cs-fixer.dist.php"
+            "docs",
+            "tests",
+            "assets",
+            "phpunit.xml",
+            ".gitignore",
+            ".gitattributes",
+            ".php-cs-fixer.dist.php"
         ]
     },
     "scripts": {
