@@ -182,7 +182,8 @@ abstract class Keyboard implements Type, \IteratorAggregate
                 $replyMarkup['resize']      ?? false,
                 $replyMarkup['single_use']  ?? false,
                 $replyMarkup['persistent']  ?? false,
-                $selective, $placeholder
+                $selective,
+                $placeholder
             ),
             default => null,
         };
