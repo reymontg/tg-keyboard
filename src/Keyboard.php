@@ -38,15 +38,6 @@ abstract class Keyboard implements Type, \IteratorAggregate
      */
     private array $rows = [];
 
-    private function getRows(): array
-    {
-        $rows = $this->rows;
-        if (empty($rows[$this->index])) {
-            unset($rows[$this->index]);
-        }
-        return $rows;
-    }
-
     /**
      * Add button(s) to keyboard.
      */
@@ -68,15 +59,24 @@ abstract class Keyboard implements Type, \IteratorAggregate
         if ($value) {
             $callback($this, $value);
         } elseif ($default) {
-            return $default($this, $value);
+            $default($this, $value);
         }
 
         return $this;
     }
 
+    public function whenButton($value, Button $button, ?Button $default = null, bool $row = false)
+    {
+        $default = $default ? [$default]: [];
+        return $this->when(
+            $value,
+            static fn ($k) => $row ? $k->row($button) : $k->addButton($button),
+            static fn ($k) => $row ? $k->row(...$default) : $k->addButton(...$default),
+        );
+    }
+
     /**
      * To add a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
-     *
      */
     public function addToCoordinates(int $row, int $column, Button ...$button): self
     {
@@ -95,7 +95,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
             \array_splice($this->rows[$row], $column, \count($button), $button);
             return $this;
         }
-        throw new \OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
+        throw new \OutOfBoundsException("Coordinate $row:$column doesn't exists");
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
             }
             return $this;
         }
-        throw new \OutOfBoundsException("Please be sure that $row and $column exists in array keys!");
+        throw new \OutOfBoundsException("Coordinate $row:$column doesn't exists");
     }
 
     /**
@@ -123,17 +123,20 @@ abstract class Keyboard implements Type, \IteratorAggregate
      */
     public function remove(): self
     {
-        if (!empty($rows = $this->rows) && !empty($endButtons = \end($rows))) {
-            $endRow    = \array_keys($rows);
-            $endButton = \array_keys($endButtons);
-
-            if (\count($endButtons) == 1) {
-                unset($this->rows[\end($endRow)]);
-            }
-            unset($this->rows[\end($endRow)][\end($endButton)]);
-            return $this;
+        if (empty($rows = $this->rows) && empty($endButtons = \end($rows))) {
+            throw new \RangeException("Keyboard array is empty");
         }
-        throw new \RangeException("Keyboard array is already empty!");
+
+        $endRow    = \array_keys($rows);
+        $endButton = \array_keys($endButtons);
+
+        if (\count($endButtons) == 1) {
+            unset($this->rows[\end($endRow)]);
+        }
+
+        unset($this->rows[\end($endRow)][\end($endButton)]);
+
+        return $this;
     }
 
     /**
@@ -333,6 +336,18 @@ abstract class Keyboard implements Type, \IteratorAggregate
             $keyboard->row();
         }
         return $keyboard;
+    }
+
+    /**
+     * @return list<Button>
+     */
+    private function getRows(): array
+    {
+        $rows = $this->rows;
+        if (empty($rows[$this->index])) {
+            unset($rows[$this->index]);
+        }
+        return $rows;
     }
 
     #[\Override]
