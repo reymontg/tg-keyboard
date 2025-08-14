@@ -30,9 +30,17 @@ final class KeyboardHide extends Keyboard
     /**
      * @param bool $selective Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
      */
+    public function __construct(bool $selective = false)
+    {
+        $this->selective = $selective;
+    }
+
+    /**
+     * @param bool $selective Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
+     */
     public static function new(bool $selective = false): self
     {
-        return (new self)->selective($selective);
+        return new static($selective);
     }
 
     public function addButton(Button ...$button): Keyboard

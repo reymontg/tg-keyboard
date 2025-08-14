@@ -33,11 +33,19 @@ final class KeyboardForceReply extends Keyboard
      * @param bool    $selective   Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
      * @param ?string $placeholder The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
      */
+    public function __construct(bool $selective = false, ?string $placeholder = null)
+    {
+        $this->selective = $selective;
+        $this->placeholder = $placeholder;
+    }
+
+    /**
+     * @param bool    $selective   Whether to show the keyboard to specific users only. Targets: 1- users that are @mentioned in the text of the [Message](https://core.telegram.org/bots/api#message) object 2- if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.
+     * @param ?string $placeholder The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
+     */
     public static function new(bool $selective = false, ?string $placeholder = null): self
     {
-        return (new static())
-            ->selective($selective)
-            ->placeholder($placeholder);
+        return new static($selective, $placeholder);
     }
 
     public function addButton(Button ...$button): Keyboard
