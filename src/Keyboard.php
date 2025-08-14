@@ -68,11 +68,14 @@ abstract class Keyboard implements Type, \IteratorAggregate
     public function whenButton($value, Button $button, ?Button $default = null, bool $row = false): self
     {
         $default = $default ? [$default]: [];
-        return $this->when(
+
+        $this->when(
             $value,
-            static fn ($k) => $row ? $k->row($button) : $k->addButton($button),
-            static fn ($k) => $row ? $k->row(...$default) : $k->addButton(...$default),
+            static fn ($k) => $k->addButton($button),
+            static fn ($k) => $k->addButton(...$default),
         );
+
+        return $row ? $this->row() : $this;
     }
 
     /**
