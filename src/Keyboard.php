@@ -174,7 +174,6 @@ abstract class Keyboard implements Type, \IteratorAggregate, \Countable
     /**
      * Convert Telegram api keyboard.
      *
-     * @param array $replyMarkup
      * @return KeyboardInline|KeyboardHide|KeyboardForceReply|KeyboardMarkup|null
      */
     public static function fromMtproto(array $replyMarkup): ?static
