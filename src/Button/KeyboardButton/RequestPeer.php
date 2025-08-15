@@ -23,7 +23,7 @@ abstract class RequestPeer extends KeyboardButton
         parent::__construct($text);
     }
 
-    public function setButtonId(int $buttonId): self
+    public function setButtonId(int $buttonId): static
     {
         $this->buttonId = $buttonId;
         return $this;
@@ -34,7 +34,7 @@ abstract class RequestPeer extends KeyboardButton
         return $this->buttonId;
     }
 
-    public function setRequestName(?bool $name = null): self
+    public function setRequestName(?bool $name = null): static
     {
         $this->name = $name;
         return $this;
@@ -45,7 +45,7 @@ abstract class RequestPeer extends KeyboardButton
         return $this->name;
     }
 
-    public function setRequestUsername(?bool $username = null): self
+    public function setRequestUsername(?bool $username = null): static
     {
         $this->username = $username;
         return $this;
@@ -56,7 +56,7 @@ abstract class RequestPeer extends KeyboardButton
         return $this->username;
     }
 
-    public function setRequestPhoto(?bool $photo = null): self
+    public function setRequestPhoto(?bool $photo = null): static
     {
         $this->photo = $photo;
         return $this;

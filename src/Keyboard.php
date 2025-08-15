@@ -29,7 +29,7 @@ use Reymon\Type\Keyboard\KeyboardMarkup;
  * @template TButton
  * @implements \IteratorAggregate<array<TButton>>
  */
-abstract class Keyboard implements Type, \IteratorAggregate
+abstract class Keyboard implements Type, \IteratorAggregate, \Countable
 {
     private int $index = 0;
 
@@ -41,7 +41,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     /**
      * Add button(s) to keyboard.
      */
-    public function addButton(Button ...$button): self
+    public function addButton(Button ...$button): static
     {
         $row = &$this->rows[$this->index];
         $row = \array_merge($row ?? [], $button);
@@ -54,7 +54,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
      * @param \Closure($this)|null $callback
      * @param \Closure($this)|null $default
      */
-    public function when($value, ?\Closure $callback = null, ?\Closure $default = null): self
+    public function when($value, ?\Closure $callback = null, ?\Closure $default = null): static
     {
         if ($value) {
             $callback($this, $value);
@@ -65,7 +65,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
         return $this;
     }
 
-    public function whenButton($value, Button $button, ?Button $default = null, bool $row = false): self
+    public function whenButton($value, Button $button, ?Button $default = null, bool $row = false): static
     {
         $default = $default ? [$default]: [];
 
@@ -81,7 +81,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     /**
      * To add a button by it coordinates to keyboard (Note that coordinates start from 0 look like arrays indexes).
      */
-    public function addToCoordinates(int $row, int $column, Button ...$button): self
+    public function addToCoordinates(int $row, int $column, Button ...$button): static
     {
         \array_splice($this->rows[$row], $column, 0, $button);
         return $this;
@@ -92,7 +92,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
      *
      * @throws \OutOfBoundsException
      */
-    public function replaceIntoCoordinates(int $row, int $column, Button ...$button): self
+    public function replaceIntoCoordinates(int $row, int $column, Button ...$button): static
     {
         if (\array_key_exists($row, $this->rows) && \array_key_exists($column, $this->rows[$row])) {
             \array_splice($this->rows[$row], $column, \count($button), $button);
@@ -106,7 +106,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
      *
      * @throws \OutOfBoundsException
      */
-    public function removeFromCoordinates(int $row, int $column, int $count = 1): self
+    public function removeFromCoordinates(int $row, int $column, int $count = 1): static
     {
         if (\array_key_exists($row, $this->rows) && \array_key_exists($column, $this->rows[$row])) {
             \array_splice($this->rows[$row], $column, $count);
@@ -124,7 +124,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
      *
      * @throws \RangeException
      */
-    public function remove(): self
+    public function remove(): static
     {
         if (empty($rows = $this->rows) && empty($endButtons = \end($rows))) {
             throw new \RangeException("Keyboard array is empty");
@@ -165,7 +165,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
     /**
      * Add specified buttons to keyboard (each button will add to new row).
      */
-    public function stack(?Button ...$button): self
+    public function stack(?Button ...$button): static
     {
         \array_map($this->row(...), $button);
         return $this;
@@ -174,9 +174,10 @@ abstract class Keyboard implements Type, \IteratorAggregate
     /**
      * Convert Telegram api keyboard.
      *
-     * @param array $replyMarkup array of Mtproto keyboard
+     * @param array $replyMarkup
+     * @return KeyboardInline|KeyboardHide|KeyboardForceReply|KeyboardMarkup|null
      */
-    public static function fromMtproto(array $replyMarkup): ?self
+    public static function fromMtproto(array $replyMarkup): ?static
     {
         $selective = $replyMarkup['selective'] ?? false;
         $placeholder = $replyMarkup['placeholder'] ?? null;
@@ -300,7 +301,7 @@ abstract class Keyboard implements Type, \IteratorAggregate
      *
      * @param array $replyMarkup array of Telegram api keyboard
      */
-    public static function fromBotApi(array $replyMarkup): ?self
+    public static function fromBotApi(array $replyMarkup): ?KeyboardInline
     {
         if (!isset($replyMarkup['inline_keyboard'])) {
             return null;
@@ -378,6 +379,14 @@ abstract class Keyboard implements Type, \IteratorAggregate
             ],
             $this->getRows()
         );
+    }
+
+    /**
+     * @internal
+     */
+    public function count(): int
+    {
+        return \count($this->getRows());
     }
 
     /**

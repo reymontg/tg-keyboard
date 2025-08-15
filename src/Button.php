@@ -26,7 +26,7 @@ abstract class Button implements Type
     {
     }
 
-    public function setText(string $text): self
+    public function setText(string $text): static
     {
         $this->text = $text;
         return $this;

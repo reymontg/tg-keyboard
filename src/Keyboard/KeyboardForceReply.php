@@ -48,7 +48,10 @@ final class KeyboardForceReply extends Keyboard
         return new static($selective, $placeholder);
     }
 
-    public function addButton(Button ...$button): Keyboard
+    /**
+     * @throws KeyboardException
+     */
+    public function addButton(Button ...$button): self
     {
         throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
     }
@@ -78,6 +81,15 @@ final class KeyboardForceReply extends Keyboard
     public function jsonSerialize(): array
     {
         return $this->toApi();
+    }
+
+    /**
+     * @internal
+     */
+    #[\Override]
+    public function count(): int
+    {
+        return 0;
     }
 
     /**

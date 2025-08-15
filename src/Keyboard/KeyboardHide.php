@@ -43,7 +43,10 @@ final class KeyboardHide extends Keyboard
         return new static($selective);
     }
 
-    public function addButton(Button ...$button): Keyboard
+    /**
+     * @throws KeyboardException
+     */
+    public function addButton(Button ...$button): self
     {
         throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
     }
@@ -78,6 +81,16 @@ final class KeyboardHide extends Keyboard
     /**
      * @internal
      */
+    #[\Override]
+    public function count(): int
+    {
+        return 0;
+    }
+
+    /**
+     * @internal
+     */
+    #[\Override]
     public function getIterator(): \EmptyIterator
     {
         return new \EmptyIterator;
