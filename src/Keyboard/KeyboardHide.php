@@ -46,7 +46,7 @@ final class KeyboardHide extends Keyboard
     /**
      * @throws KeyboardException
      */
-    public function addButton(Button ...$button): self
+    public function addButton(Button ...$button): static
     {
         throw new KeyboardException(\sprintf('%s cannot use %s', __CLASS__, __METHOD__));
     }
