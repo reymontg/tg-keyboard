@@ -12,7 +12,7 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Type\Utils;
+namespace Reymon\Type\Keyboard\Utils;
 
 /**
  * @internal

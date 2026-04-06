@@ -12,25 +12,21 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Type\Utils;
+namespace Reymon\Type\Keyboard\Utils;
 
 /**
  * @internal
  */
-trait Placeholder
+trait SingleUse
 {
-    private ?string $placeholder = null;
+    private bool $singleUse = true;
 
     /**
-     * The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
+     * Whether to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat - the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
      */
-    public function placeholder(?string $placeholder = null): self
+    public function singleUse(bool $singleUse = true): self
     {
-        $length = \mb_strlen($placeholder ?? '');
-        if (\is_null($placeholder) || ($length >= 1 && $length <= 64)) {
-            $this->placeholder = $placeholder;
-            return $this;
-        }
-        throw new \LengthException(\sprintf('Placeholder must be up to 1-256 characters. input has %d.', $length));
+        $this->singleUse = $singleUse;
+        return $this;
     }
 }

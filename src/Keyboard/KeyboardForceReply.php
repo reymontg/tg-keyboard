@@ -18,9 +18,9 @@ namespace Reymon\Type\Keyboard;
 use Reymon\Exception\KeyboardException;
 use Reymon\Type\Button;
 use Reymon\Type\Keyboard;
-use Reymon\Type\Utils\Placeholder;
-use Reymon\Type\Utils\Selective;
-use Reymon\Type\Utils\SingleUse;
+use Reymon\Type\Keyboard\Utils\Placeholder;
+use Reymon\Type\Keyboard\Utils\Selective;
+use Reymon\Type\Keyboard\Utils\SingleUse;
 
 /**
  * Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'.

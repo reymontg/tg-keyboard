@@ -12,21 +12,25 @@
  * @license   https://choosealicense.com/licenses/gpl-3.0/ GPLv3
  */
 
-namespace Reymon\Type\Utils;
+namespace Reymon\Type\Keyboard\Utils;
 
 /**
  * @internal
  */
-trait Url
+trait Placeholder
 {
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
-        return $this;
-    }
+    private ?string $placeholder = null;
 
-    public function getUrl(): string
+    /**
+     * The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
+     */
+    public function placeholder(?string $placeholder = null): self
     {
-        return $this->url;
+        $length = \mb_strlen($placeholder ?? '');
+        if (\is_null($placeholder) || ($length >= 1 && $length <= 64)) {
+            $this->placeholder = $placeholder;
+            return $this;
+        }
+        throw new \LengthException(\sprintf('Placeholder must be up to 1-256 characters. input has %d.', $length));
     }
 }

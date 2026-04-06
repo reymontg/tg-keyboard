@@ -18,7 +18,7 @@ namespace Reymon\Type\Keyboard;
 use Reymon\Exception\KeyboardException;
 use Reymon\Type\Button;
 use Reymon\Type\Keyboard;
-use Reymon\Type\Utils\Selective;
+use Reymon\Type\Keyboard\Utils\Selective;
 
 /**
  * Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard.
