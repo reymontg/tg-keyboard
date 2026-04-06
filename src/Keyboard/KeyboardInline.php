@@ -41,7 +41,7 @@ final class KeyboardInline extends Keyboard
      */
     public function addCallback(string $text, string $callback, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::CallBack($text, $callback, $color, $emojiId));
+        return $this->addButton(InlineButton::Callback($text, $callback, $color, $emojiId));
     }
 
     /**

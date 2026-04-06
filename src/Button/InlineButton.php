@@ -17,7 +17,7 @@ namespace Reymon\Type\Button;
 
 use Reymon\Type\Button;
 use Reymon\Type\Button\InlineButton\Buy;
-use Reymon\Type\Button\InlineButton\CallBack;
+use Reymon\Type\Button\InlineButton\Callback;
 use Reymon\Type\Button\InlineButton\CopyText;
 use Reymon\Type\Button\InlineButton\Game;
 use Reymon\Type\Button\InlineButton\LoginUrl;
@@ -37,9 +37,9 @@ abstract class InlineButton extends Button
      * @param Color  $color    Style of the button.
      * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function CallBack(string $text, string $callback, Color $color = Color::NONE, ?int $emojiId = null): CallBack
+    public static function Callback(string $text, string $callback, Color $color = Color::NONE, ?int $emojiId = null): Callback
     {
-        return new CallBack($text, $callback, $color, $emojiId);
+        return new Callback($text, $callback, $color, $emojiId);
     }
 
     /**

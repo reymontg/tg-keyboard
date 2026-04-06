@@ -20,7 +20,7 @@ use Reymon\Type\Button\InlineButton;
 /**
  * Represents inline button with callback data.
  */
-final class CallBack extends InlineButton
+final class Callback extends InlineButton
 {
     /**
      * @param string $text     Label text on the button

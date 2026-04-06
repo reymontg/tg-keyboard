@@ -276,7 +276,7 @@ abstract class Keyboard implements Type, \IteratorAggregate, \Countable
                         'keyboardButtonBuy'      => InlineButton::Buy($text),
                         'keyboardButtonUrl'      => InlineButton::Url($text, $button['url']),
                         'keyboardButtonWebView'  => InlineButton::Webapp($text, $button['url']),
-                        'keyboardButtonCallback' => InlineButton::CallBack($text, $button['data']),
+                        'keyboardButtonCallback' => InlineButton::Callback($text, $button['data']),
                         'keyboardButtonCopy'     => InlineButton::CopyText($text, $button['copy_text']),
                         'keyboardButtonUrlAuth',
                         'inputKeyboardButtonUrlAuth' => InlineButton::LoginUrl(
@@ -316,7 +316,7 @@ abstract class Keyboard implements Type, \IteratorAggregate, \Countable
                     isset($button['url']) => InlineButton::Url($text, $button['url']),
                     isset($button['web_app']) => InlineButton::Webapp($text, $button['url']),
                     isset($button['callback_game']) => InlineButton::Game($text),
-                    isset($button['callback_data']) => InlineButton::CallBack($text, $button['callback_data']),
+                    isset($button['callback_data']) => InlineButton::Callback($text, $button['callback_data']),
                     isset($button['switch_inline_query']) => InlineButton::SwitchInline($text, $query),
                     isset($button['switch_inline_query_current_chat']) => InlineButton::SwitchInlineCurrent($text, $query),
                     isset($button['switch_inline_query_chosen_chat'])  => InlineButton::SwitchInlineFilter(
