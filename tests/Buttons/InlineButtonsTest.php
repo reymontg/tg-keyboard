@@ -14,7 +14,7 @@ class InlineButtonsTest extends TestCase
             'text' => 'hello',
             'pay' => true,
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testGame(): void
@@ -24,7 +24,7 @@ class InlineButtonsTest extends TestCase
             'text' => 'hello',
             'callback_game' => '',
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testUrl(): void
@@ -34,17 +34,17 @@ class InlineButtonsTest extends TestCase
             'text' => 'hello',
             'url' => 'https://example.com',
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testCallbackData(): void
     {
-        $button = InlineButton::CallBack('hello', 'hello-callback');
+        $button = InlineButton::Callback('hello', 'hello-callback');
         $rawButton = [
             'text' => 'hello',
             'callback_data' => 'hello-callback',
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testCopyText(): void
@@ -54,7 +54,7 @@ class InlineButtonsTest extends TestCase
             'text' => 'hello',
             'copy_text' => ['text' => 'hello-copy'],
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testLoginUrl(): void
@@ -86,9 +86,9 @@ class InlineButtonsTest extends TestCase
             ],
             'text' => 'please-login',
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button1), \json_encode($rawButton1));
-        $this->assertJsonStringEqualsJsonString(\json_encode($button2), \json_encode($rawButton2));
-        $this->assertJsonStringEqualsJsonString(\json_encode($button3), \json_encode($rawButton3));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button1->toApi(), $rawButton1, []);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button2->toApi(), $rawButton2, []);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button3->toApi(), $rawButton3, []);
     }
 
     public function testSwitchInline(): void
@@ -108,8 +108,8 @@ class InlineButtonsTest extends TestCase
             'switch_inline_query_chosen_chat' => ['allow_user_chats' => true, 'query' => 'test'],
             'text' => 'hello'
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button1), \json_encode($rawButton1));
-        $this->assertJsonStringEqualsJsonString(\json_encode($button2), \json_encode($rawButton2));
-        $this->assertJsonStringEqualsJsonString(\json_encode($button3), \json_encode($rawButton3));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button1->toApi(), $rawButton1, []);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button2->toApi(), $rawButton2, []);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button3->toApi(), $rawButton3, []);
     }
 }

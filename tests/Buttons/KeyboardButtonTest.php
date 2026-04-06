@@ -43,9 +43,9 @@ class KeyboardButtonTest extends TestCase
                 'request_photo'    => false
             ]
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button1), \json_encode($rawButton1));
-        $this->assertJsonStringEqualsJsonString(\json_encode($button2), \json_encode($rawButton2));
-        $this->assertJsonStringEqualsJsonString(\json_encode($button3), \json_encode($rawButton3));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button1->toApi(), $rawButton1, []);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button2->toApi(), $rawButton2, []);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button3->toApi(), $rawButton3, []);
     }
 
     public function testWebApp(): void
@@ -57,7 +57,7 @@ class KeyboardButtonTest extends TestCase
                 'url' => 'https://example.com'
             ],
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testText(): void
@@ -66,7 +66,7 @@ class KeyboardButtonTest extends TestCase
         $rawButton = [
             'text' => 'hello'
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testPhone(): void
@@ -76,7 +76,7 @@ class KeyboardButtonTest extends TestCase
             'text'            => 'send-phone',
             'request_contact' => true,
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testLocation(): void
@@ -86,7 +86,7 @@ class KeyboardButtonTest extends TestCase
             'text'            => 'send-location',
             'request_location' => true,
         ];
-        $this->assertJsonStringEqualsJsonString(\json_encode($button), \json_encode($rawButton));
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($button->toApi(), $rawButton, []);
     }
 
     public function testPoll(): void
