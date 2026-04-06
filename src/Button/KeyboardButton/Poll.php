@@ -14,6 +14,7 @@
 
 namespace Reymon\Type\Button\KeyboardButton;
 
+use Reymon\Type\Button\Color;
 use Reymon\Type\Button\KeyboardButton;
 use Reymon\Type\Button\PollType;
 
@@ -23,11 +24,13 @@ use Reymon\Type\Button\PollType;
 final class Poll extends KeyboardButton
 {
     /**
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function __construct(string $text, private PollType $type = PollType::ALL)
+    public function __construct(string $text, private PollType $type = PollType::ALL, Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text);
+        parent::__construct($text, $color, $emojiId);
     }
 
     public function setPollType(PollType $type = PollType::ALL): self
@@ -44,12 +47,14 @@ final class Poll extends KeyboardButton
     /**
      * Create text button that request poll from user.
      *
-     * @param string   $text Label text on the button
-     * @param PollType $type Type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+     * @param string   $text    Label text on the button
+     * @param PollType $type    Type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+     * @param Color    $color   Style of the button.
+     * @param ?int     $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function new(string $text, PollType $type = PollType::ALL): self
+    public static function new(string $text, PollType $type = PollType::ALL, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return new static($text, $type);
+        return new static($text, $type, $color, $emojiId);
     }
 
     #[\Override]

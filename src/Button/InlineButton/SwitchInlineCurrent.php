@@ -15,29 +15,35 @@
 
 namespace Reymon\Type\Button\InlineButton;
 
+use Reymon\Type\Button\Color;
+
 /**
  * Represents inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
  */
 final class SwitchInlineCurrent extends SwitchInline
 {
     /**
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text    Label text on the button
+     * @param string $query   Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function __construct(string $text, string $query = '')
+    public function __construct(string $text, string $query = '', Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text, $query);
+        parent::__construct($text, $query, $color, $emojiId);
     }
 
     /**
      * Create inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
      *
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text    Label text on the button
+     * @param string $query   Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function new(string $text, string $query): self
+    public static function new(string $text, string $query, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return new static($text, $query);
+        return new static($text, $query, $color, $emojiId);
     }
 
     #[\Override]

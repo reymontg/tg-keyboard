@@ -15,6 +15,7 @@
 
 namespace Reymon\Type\Keyboard;
 
+use Reymon\Type\Button\Color;
 use Reymon\Type\Button\InlineButton;
 use Reymon\Type\Keyboard;
 
@@ -35,10 +36,12 @@ final class KeyboardInline extends Keyboard
      *
      * @param string $text     Label text on the button
      * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color    Style of the button.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addCallback(string $text, string $callback): self
+    public function addCallback(string $text, string $callback, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::CallBack($text, $callback));
+        return $this->addButton(InlineButton::CallBack($text, $callback, $color, $emojiId));
     }
 
     /**
@@ -58,21 +61,25 @@ final class KeyboardInline extends Keyboard
      *
      * @param string $text     Label text on the button
      * @param string $copyText The text to be copied to the clipboard; 1-256 characters
+     * @param Color  $color    Style of the button.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addCopyText(string $text, string $copyText): self
+    public function addCopyText(string $text, string $copyText, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::CopyText($text, $copyText));
+        return $this->addButton(InlineButton::CopyText($text, $copyText, $color, $emojiId));
     }
 
     /**
      * Create Inline button with url.
      *
-     * @param string $text Label text on the button
-     * @param string $url  HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+     * @param string $text    Label text on the button
+     * @param string $url     HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addUrl(string $text, string $url): self
+    public function addUrl(string $text, string $url, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::Url($text, $url));
+        return $this->addButton(InlineButton::Url($text, $url, $color, $emojiId));
     }
 
     /**
@@ -90,12 +97,14 @@ final class KeyboardInline extends Keyboard
     /**
      * Create Inline webapp button.
      *
-     * @param string $text Label text on the button
-     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
+     * @param string $text    Label text on the button
+     * @param string $url     An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addWebApp(string $text, string $url): self
+    public function addWebApp(string $text, string $url, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::WebApp($text, $url));
+        return $this->addButton(InlineButton::WebApp($text, $url, $color, $emojiId));
     }
 
     /**
@@ -106,41 +115,49 @@ final class KeyboardInline extends Keyboard
      * @param ?string $forwardText New text of the button in forwarded messages
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
+     * @param Color   $color       Style of the button.
+     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addLoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): self
+    public function addLoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::LoginUrl($text, $url, $forwardText, $username, $writeAccess));
+        return $this->addButton(InlineButton::LoginUrl($text, $url, $forwardText, $username, $writeAccess, $color, $emojiId));
     }
 
     /**
      * Create game button for your inline game.
      *
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addGame(string $text): self
+    public function addGame(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::Game($text));
+        return $this->addButton(InlineButton::Game($text, $color, $emojiId));
     }
 
     /**
      * Create a buy button for your inline buy request(similar to webapps).
      *
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addBuy(string $text): self
+    public function addBuy(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::Buy($text));
+        return $this->addButton(InlineButton::Buy($text, $color, $emojiId));
     }
 
     /**
      * Create inline button that switches the current user to inline mode in a chat.
      *
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text    Label text on the button
+     * @param string $query   Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addSwitchInline(string $text, string $query): self
+    public function addSwitchInline(string $text, string $query, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::SwitchInline($text, $query));
+        return $this->addButton(InlineButton::SwitchInline($text, $query, $color, $emojiId));
     }
 
     /**
@@ -158,12 +175,14 @@ final class KeyboardInline extends Keyboard
     /**
      * Create inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
      *
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text    Label text on the button
+     * @param string $query   Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function addSwitchInlineCurrent(string $text, string $query): self
+    public function addSwitchInlineCurrent(string $text, string $query, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return $this->addButton(InlineButton::SwitchInlineCurrent($text, $query));
+        return $this->addButton(InlineButton::SwitchInlineCurrent($text, $query, $color, $emojiId));
     }
 
     public function addSwitchInlinesCurrent(... $rows): self
@@ -180,14 +199,16 @@ final class KeyboardInline extends Keyboard
      *
      * @param string    $text          Label text on the button
      * @param string    $query         The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted
+     * @param Color     $color         Style of the button.
+     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      * @param bool      $allowUsers    Whether private chats with users can be chosen
      * @param bool|null $allowBots     Whether private chats with bots can be chosen
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
      * @param bool|null $allowChannels Whether channel chats can be chosen
      */
-    public function addSwitchInlineFilter(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): self
+    public function addSwitchInlineFilter(string $text, string $query = '', Color $color = Color::NONE, ?int $emojiId = null, bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): self
     {
-        return $this->addButton(InlineButton::SwitchInlineFilter($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels));
+        return $this->addButton(InlineButton::SwitchInlineFilter($text, $query, $color, $emojiId, $allowUsers, $allowBots, $allowGroups, $allowChannels));
     }
 
     #[\Override]

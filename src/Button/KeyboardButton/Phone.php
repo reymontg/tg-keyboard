@@ -14,6 +14,7 @@
 
 namespace Reymon\Type\Button\KeyboardButton;
 
+use Reymon\Type\Button\Color;
 use Reymon\Type\Button\KeyboardButton;
 
 /**
@@ -22,21 +23,25 @@ use Reymon\Type\Button\KeyboardButton;
 final class Phone extends KeyboardButton
 {
     /**
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function __construct(string $text)
+    public function __construct(string $text, Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text);
+        parent::__construct($text, $color, $emojiId);
     }
 
     /**
      * Create text button that request contact info from user.
      *
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function new(string $text): self
+    public static function new(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return new static($text);
+        return new static($text, $color, $emojiId);
     }
 
     #[\Override]

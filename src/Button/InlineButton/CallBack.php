@@ -14,6 +14,7 @@
 
 namespace Reymon\Type\Button\InlineButton;
 
+use Reymon\Type\Button\Color;
 use Reymon\Type\Button\InlineButton;
 
 /**
@@ -24,10 +25,12 @@ final class CallBack extends InlineButton
     /**
      * @param string $text     Label text on the button
      * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color    Style of the button.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function __construct(string $text, private string $callback)
+    public function __construct(string $text, private string $callback, Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text);
+        parent::__construct($text, $color, $emojiId);
     }
 
     public function setCallback(string $callback): self
@@ -46,10 +49,12 @@ final class CallBack extends InlineButton
      *
      * @param string $text     Label text on the button
      * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color    Style of the button.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function new(string $text, string $callback): self
+    public static function new(string $text, string $callback, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return new static($text, $callback);
+        return new static($text, $callback, $color, $emojiId);
     }
 
     #[\Override]

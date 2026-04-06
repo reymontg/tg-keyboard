@@ -34,10 +34,12 @@ abstract class InlineButton extends Button
      *
      * @param string $text     Label text on the button
      * @param string $callback Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color    Style of the button.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function CallBack(string $text, string $callback): CallBack
+    public static function CallBack(string $text, string $callback, Color $color = Color::NONE, ?int $emojiId = null): CallBack
     {
-        return new CallBack($text, $callback);
+        return new CallBack($text, $callback, $color, $emojiId);
     }
 
     /**
@@ -45,32 +47,38 @@ abstract class InlineButton extends Button
      *
      * @param string $text     Label text on the button
      * @param string $copyText The text to be copied to the clipboard; 1-256 characters
+     * @param Color  $color    Style of the button.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function CopyText(string $text, string $copyText): CopyText
+    public static function CopyText(string $text, string $copyText, Color $color = Color::NONE, ?int $emojiId = null): CopyText
     {
-        return new CopyText($text, $copyText);
+        return new CopyText($text, $copyText, $color, $emojiId);
     }
 
     /**
      * Create Inline button with url.
      *
-     * @param string $text Label text on the button
-     * @param string $url  HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+     * @param string $text    Label text on the button
+     * @param string $url     HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function Url(string $text, string $url): Url
+    public static function Url(string $text, string $url, Color $color = Color::NONE, ?int $emojiId = null): Url
     {
-        return new Url($text, $url);
+        return new Url($text, $url, $color, $emojiId);
     }
 
     /**
      * Create Inline webapp button.
      *
-     * @param string $text Label text on the button
-     * @param string $url  An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
+     * @param string $text    Label text on the button
+     * @param string $url     An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function Webapp(string $text, string $url): Webapp
+    public static function Webapp(string $text, string $url, Color $color = Color::NONE, ?int $emojiId = null): Webapp
     {
-        return new Webapp($text, $url);
+        return new Webapp($text, $url, $color, $emojiId);
     }
 
     /**
@@ -81,51 +89,61 @@ abstract class InlineButton extends Button
      * @param ?string $forwardText New text of the button in forwarded messages
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
+     * @param Color   $color       Style of the button.
+     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function LoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false): LoginUrl
+    public static function LoginUrl(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false, Color $color = Color::NONE, ?int $emojiId = null): LoginUrl
     {
-        return new LoginUrl($text, $url, $forwardText, $username, $writeAccess);
+        return new LoginUrl($text, $url, $forwardText, $username, $writeAccess, $color, $emojiId);
     }
 
     /**
      * Create game button for your inline game.
      *
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function Game(string $text): Game
+    public static function Game(string $text, Color $color = Color::NONE, ?int $emojiId = null): Game
     {
-        return new Game($text);
+        return new Game($text, $color, $emojiId);
     }
 
     /**
      * Create a buy button for your inline buy request(similar to webapps).
      *
-     * @param string $text Label text on the button
+     * @param string $text    Label text on the button
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function Buy(string $text): Buy
+    public static function Buy(string $text, Color $color = Color::NONE, ?int $emojiId = null): Buy
     {
-        return new Buy($text);
+        return new Buy($text, $color, $emojiId);
     }
     /**
      * Create inline button that switches the current user to inline mode in a chat.
      *
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text    Label text on the button
+     * @param string $query   Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function SwitchInline(string $text, string $query): SwitchInline
+    public static function SwitchInline(string $text, string $query, Color $color = Color::NONE, ?int $emojiId = null): SwitchInline
     {
-        return new SwitchInline($text, $query);
+        return new SwitchInline($text, $query, $color, $emojiId);
     }
 
     /**
      * Create inline button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
      *
-     * @param string $text  Label text on the button
-     * @param string $query Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param string $text    Label text on the button
+     * @param string $query   Data to be sent in a [callback query](https://core.telegram.org/bots/api#callbackquery) to the bot when button is pressed, 1-64 bytes
+     * @param Color  $color   Style of the button.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function SwitchInlineCurrent(string $text, string $query): SwitchInlineCurrent
+    public static function SwitchInlineCurrent(string $text, string $query, Color $color = Color::NONE, ?int $emojiId = null): SwitchInlineCurrent
     {
-        return new SwitchInlineCurrent($text, $query);
+        return new SwitchInlineCurrent($text, $query, $color, $emojiId);
     }
 
     /**
@@ -133,13 +151,15 @@ abstract class InlineButton extends Button
      *
      * @param string    $text          Label text on the button
      * @param string    $query         The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted
+     * @param Color     $color         Style of the button.
+     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      * @param bool      $allowUsers    Whether private chats with users can be chosen
      * @param bool|null $allowBots     Whether private chats with bots can be chosen
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
      * @param bool|null $allowChannels Whether channel chats can be chosen
      */
-    public static function SwitchInlineFilter(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): SwitchInlineFilter
+    public static function SwitchInlineFilter(string $text, string $query = '', Color $color = Color::NONE, ?int $emojiId = null, bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): SwitchInlineFilter
     {
-        return new SwitchInlineFilter($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels);
+        return new SwitchInlineFilter($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels, $color, $emojiId);
     }
 }

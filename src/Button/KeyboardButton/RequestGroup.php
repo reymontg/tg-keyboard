@@ -14,6 +14,7 @@
 
 namespace Reymon\Type\Button\KeyboardButton;
 
+use Reymon\Type\Button\Color;
 use Reymon\Type\Chat\AdministratorRights;
 
 /**
@@ -33,10 +34,12 @@ final class RequestGroup extends RequestPeer
      * @param bool                 $photo           Whether to request the chat's photo
      * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
      * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     * @param Color                $color           Style of the button.
+     * @param ?int                 $emojiId         Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function __construct(string $text, int $buttonId, private ?bool $creator = null, private ?bool $hasUsername = null, private ?bool $forum = null, private ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, private ?AdministratorRights $userAdminRights = null, private ?AdministratorRights $botAdminRights = null)
+    public function __construct(string $text, int $buttonId, private ?bool $creator = null, private ?bool $hasUsername = null, private ?bool $forum = null, private ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, private ?AdministratorRights $userAdminRights = null, private ?AdministratorRights $botAdminRights = null, Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text, $buttonId, $name, $username, $photo);
+        parent::__construct($text, $buttonId, $name, $username, $photo, $color, $emojiId);
     }
 
     /**
@@ -53,10 +56,12 @@ final class RequestGroup extends RequestPeer
      * @param bool                 $photo           Whether to request the chat's photo
      * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
      * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
+     * @param Color                $color           Style of the button.
+     * @param ?int                 $emojiId         Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public static function new(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $title = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null): self
+    public static function new(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $title = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null, Color $color = Color::NONE, ?int $emojiId = null): self
     {
-        return new static($text, $buttonId, $creator, $hasUsername, $forum, $member, $title, $username, $photo, $userAdminRights, $botAdminRights);
+        return new static($text, $buttonId, $creator, $hasUsername, $forum, $member, $title, $username, $photo, $userAdminRights, $botAdminRights, $color, $emojiId);
     }
 
     #[\Override]

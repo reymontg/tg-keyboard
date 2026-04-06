@@ -14,6 +14,8 @@
 
 namespace Reymon\Type\Button\InlineButton;
 
+use Reymon\Type\Button\Color;
+
 /**
  * Represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
  */
@@ -22,14 +24,16 @@ final class SwitchInlineFilter extends SwitchInline
     /**
      * @param string    $text          Label text on the button
      * @param string    $query         The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted
+     * @param Color     $color         Style of the button.
+     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      * @param bool      $allowUsers    Whether private chats with users can be chosen
      * @param bool|null $allowBots     Whether private chats with bots can be chosen
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
      * @param bool|null $allowChannels Whether channel chats can be chosen
      */
-    public function __construct(string $text, string $query = '', private bool $allowUsers = true, private ?bool $allowBots = null, private ?bool $allowGroups = null, private ?bool $allowChannels = null)
+    public function __construct(string $text, string $query = '', private bool $allowUsers = true, private ?bool $allowBots = null, private ?bool $allowGroups = null, private ?bool $allowChannels = null, Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text, $query);
+        parent::__construct($text, $query, $color, $emojiId);
     }
 
     public function allowUsers(bool $allow): self
@@ -81,14 +85,16 @@ final class SwitchInlineFilter extends SwitchInline
      *
      * @param string    $text          Label text on the button
      * @param string    $query         The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted
+     * @param Color     $color         Style of the button.
+     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      * @param bool      $allowUsers    Whether private chats with users can be chosen
      * @param bool|null $allowBots     Whether private chats with bots can be chosen
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
      * @param bool|null $allowChannels Whether channel chats can be chosen
      */
-    public static function new(string $text, string $query = '', bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): self
+    public static function new(string $text, string $query = '', Color $color = Color::NONE, ?int $emojiId = null, bool $allowUsers = true, ?bool $allowBots = null, ?bool $allowGroups = null, ?bool $allowChannels = null): self
     {
-        return new static($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels);
+        return new static($text, $query, $allowUsers, $allowBots, $allowGroups, $allowChannels, $color, $emojiId);
     }
 
     #[\Override]
@@ -113,12 +119,15 @@ final class SwitchInlineFilter extends SwitchInline
 
         if ($this->allowUsers) {
             $filter[] = ['_' => 'inlineQueryPeerTypePM'];
-        } elseif ($this->allowBots) {
+        }
+        if ($this->allowBots) {
             $filter[] = ['_' => 'inlineQueryPeerTypeBotPM'];
-        } elseif ($this->allowGroups) {
+        }
+        if ($this->allowGroups) {
             $filter[] = ['_' => 'inlineQueryPeerTypeChat'];
             $filter[] = ['_' => 'inlineQueryPeerTypeMegagroup'];
-        } elseif ($this->allowChannels) {
+        }
+        if ($this->allowChannels) {
             $filter[] = ['_' => 'inlineQueryPeerTypeBroadcast'];
         }
 

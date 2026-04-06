@@ -14,13 +14,14 @@
 
 namespace Reymon\Type\Button\KeyboardButton;
 
+use Reymon\Type\Button\Color;
 use Reymon\Type\Button\KeyboardButton;
 
 abstract class RequestPeer extends KeyboardButton
 {
-    public function __construct(string $text, protected int $buttonId, protected bool $name = false, protected bool $username = false, protected bool $photo = false)
+    public function __construct(string $text, protected int $buttonId, protected bool $name = false, protected bool $username = false, protected bool $photo = false, Color $color = Color::NONE, ?int $emojiId = null)
     {
-        parent::__construct($text);
+        parent::__construct($text, $color, $emojiId);
     }
 
     public function setButtonId(int $buttonId): static
