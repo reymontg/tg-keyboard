@@ -82,7 +82,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text    Label text on the button
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function addText(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -109,7 +109,7 @@ final class KeyboardMarkup extends Keyboard
      * @param string $text    Label text on the button
      * @param string $url     An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function addWebApp(string $text, string $url, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -121,7 +121,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text    Label text on the button
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestPoll(string $text, PollType $type = PollType::ALL, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -133,7 +133,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text    Label text on the button
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestPollQuiz(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -145,7 +145,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text    Label text on the button
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestPollRegular(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -157,7 +157,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text    Label text on the button
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestLocation(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -169,7 +169,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param string $text    Label text on the button
      * @param Color  $color   Style of the button.
-     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestPhone(string $text, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -188,7 +188,7 @@ final class KeyboardMarkup extends Keyboard
      * @param bool   $photo    Whether to request the users' photo
      * @param int    $max      The maximum number of users to be selected; 1-10.
      * @param Color  $color    Style of the button.
-     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int   $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestUsers(string $text, int $buttonId, ?bool $bot = null, ?bool $premium = null, bool $name = false, bool $username = false, bool $photo = false, int $max = 1, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -210,7 +210,7 @@ final class KeyboardMarkup extends Keyboard
      * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
      * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      * @param Color                $color           Style of the button.
-     * @param ?int                 $emojiId         Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int                 $emojiId         Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestGroup(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $forum = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -231,7 +231,7 @@ final class KeyboardMarkup extends Keyboard
      * @param ?AdministratorRights $userAdminRights The required administrator rights of the user in the chat. If not specified, no additional restrictions are applied.
      * @param ?AdministratorRights $botAdminRights  The required administrator rights of the bot in the chat. If not specified, no additional restrictions are applied.
      * @param Color                $color           Style of the button.
-     * @param ?int                 $emojiId         Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int                 $emojiId         Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function requestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null, Color $color = Color::NONE, ?int $emojiId = null): self
     {
@@ -239,16 +239,16 @@ final class KeyboardMarkup extends Keyboard
     }
 
     /**
-     * Create button for the creation of a managed bot. Information about the created bot will be shared with the bot using the update _managed_bot_ and a [Message](https://core.telegram.org/bots/api#message) with the field _managed_bot_created_.
+     * Create button for the creation of a managed bot. Information about the created bot will be shared with the bot using the update _managed_bot_ and a [Message](https://core.telegram.org/bots/api#message) with the field _managed_bot_created_.
      *
      * @param string  $text     Label text on the button
      * @param int     $buttonId Signed 32-bit identifier of the request
      * @param ?string $name     Suggested name for the bot
      * @param ?string $username Suggested username for the bot
      * @param Color   $color    Style of the button.
-     * @param ?int    $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int    $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function requestBot(string $text, int $buttonId, ?string $name = null, ?string $username = null,Color $color = Color::NONE, ?int $emojiId = null): self
+    public function requestBot(string $text, int $buttonId, ?string $name = null, ?string $username = null, Color $color = Color::NONE, ?int $emojiId = null): self
     {
         return $this->addButton(KeyboardButton::RequestBot($text, $buttonId, $name, $username, $color, $emojiId));
     }

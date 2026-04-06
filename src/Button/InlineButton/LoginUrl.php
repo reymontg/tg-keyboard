@@ -32,7 +32,7 @@ final class LoginUrl extends InlineButton
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      * @param Color   $color       Style of the button.
-     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function __construct(string $text, private string $url, private ?string $forwardText = null, private ?string $username = null, private bool $writeAccess = false, Color $color = Color::NONE, ?int $emojiId = null)
     {
@@ -81,7 +81,7 @@ final class LoginUrl extends InlineButton
      * @param ?string $username    Username of a bot, which will be used for user authorization.
      * @param bool    $writeAccess Whether to request the permission for your bot to send messages to the user
      * @param Color   $color       Style of the button.
-     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public static function new(string $text, string $url, ?string $forwardText = null, ?string $username = null, bool $writeAccess = false, Color $color = Color::NONE, ?int $emojiId = null): self
     {

@@ -31,7 +31,7 @@ final class RequestUsers extends RequestPeer
      * @param bool    $photo       Whether to request the users' photo
      * @param int     $maxQuantity The maximum number of users to be selected; 1-10.
      * @param Color   $color       Style of the button.
-     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public function __construct(string $text, int $buttonId, private ?bool $bot = null, private ?bool $premium = null, bool $name = false, bool $username = false, bool $photo = false, private int $maxQuantity = 1, Color $color = Color::NONE, ?int $emojiId = null)
     {
@@ -72,7 +72,7 @@ final class RequestUsers extends RequestPeer
      * @param bool    $photo       Whether to request the users' photo
      * @param int     $maxQuantity The maximum number of users to be selected; 1-10.
      * @param Color   $color       Style of the button.
-     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int    $emojiId     Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
     public static function new(string $text, $buttonId, ?bool $bot = null, ?bool $premium = null, bool $name = false, bool $username = false, bool $photo = false, int $maxQuantity = 1, Color $color = Color::NONE, ?int $emojiId = null): self
     {

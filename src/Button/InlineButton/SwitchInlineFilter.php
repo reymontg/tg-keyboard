@@ -25,7 +25,7 @@ final class SwitchInlineFilter extends SwitchInline
      * @param string    $text          Label text on the button
      * @param string    $query         The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted
      * @param Color     $color         Style of the button.
-     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      * @param bool      $allowUsers    Whether private chats with users can be chosen
      * @param bool|null $allowBots     Whether private chats with bots can be chosen
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
@@ -86,7 +86,7 @@ final class SwitchInlineFilter extends SwitchInline
      * @param string    $text          Label text on the button
      * @param string    $query         The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted
      * @param Color     $color         Style of the button.
-     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     * @param ?int      $emojiId       Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      * @param bool      $allowUsers    Whether private chats with users can be chosen
      * @param bool|null $allowBots     Whether private chats with bots can be chosen
      * @param bool|null $allowGroups   Whether group and supergroup chats can be chosen
