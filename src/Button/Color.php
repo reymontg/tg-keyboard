@@ -18,12 +18,11 @@ use Reymon\Mtproto\Type;
 
 enum Color: string implements Type
 {
-    case NONE    = 'none';
+    case NONE = '';
     case RED    = 'danger';
     case GREEN  = 'success';
     case PURPLE = 'primary';
 
-    
     #[\Override]
     public function toApi(): string
     {

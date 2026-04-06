@@ -25,9 +25,7 @@ abstract class Button implements Type
      * @param Color  $color   Style of the button.
      * @param ?int   $emojiId Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
      */
-    public function __construct(protected string $text, protected Color $color = Color::NONE, protected ?int $emojiId = null)
-    {
-    }
+    public function __construct(protected string $text, protected Color $color = Color::NONE, protected ?int $emojiId = null) {}
 
     public function setText(string $text): static
     {
@@ -40,7 +38,6 @@ abstract class Button implements Type
         return $this->text;
     }
 
-    
     public function setColor(Color $text): static
     {
         $this->text = $text;
@@ -66,16 +63,26 @@ abstract class Button implements Type
     #[\Override]
     public function toApi(): array
     {
-        return ['text' => $this->text, 'icon_custom_emoji_id' => $this->emojiId, 'style' => $this->color];
+        $button['text'] = $this->text;
+
+        if ($this->emojiId !== null) {
+            $button['icon_custom_emoji_id'] = $this->emojiId;
+        }
+
+        if ($this->color !== Color::NONE) {
+            $button['style'] = $this->color->toApi();
+        }
+
+        return $button;
     }
 
     #[\Override]
     public function toMtproto(): array
     {
         $button['text'] = $this->text;
-    
+
         if ($this->emojiId) {
-            $button['style']['icon'] = $this->emojiId; 
+            $button['style']['icon'] = $this->emojiId;
         }
 
         if ($this->color !== Color::NONE) {
