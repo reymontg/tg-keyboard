@@ -238,6 +238,21 @@ final class KeyboardMarkup extends Keyboard
         return $this->addButton(KeyboardButton::RequestChannel($text, $buttonId, $creator, $hasUsername, $member, $name, $username, $photo, $botAdminRights, $userAdminRights, $color, $emojiId));
     }
 
+    /**
+     * Create button for the creation of a managed bot. Information about the created bot will be shared with the bot using the update _managed_bot_ and a [Message](https://core.telegram.org/bots/api#message) with the field _managed_bot_created_.
+     *
+     * @param string  $text     Label text on the button
+     * @param int     $buttonId Signed 32-bit identifier of the request
+     * @param ?string $name     Suggested name for the bot
+     * @param ?string $username Suggested username for the bot
+     * @param Color   $color    Style of the button.
+     * @param ?int    $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     */
+    public function requestBot(string $text, int $buttonId, ?string $name = null, ?string $username = null,Color $color = Color::NONE, ?int $emojiId = null): self
+    {
+        return $this->addButton(KeyboardButton::RequestBot($text, $buttonId, $name, $username, $color, $emojiId));
+    }
+
     #[\Override]
     public function toApi(): array
     {

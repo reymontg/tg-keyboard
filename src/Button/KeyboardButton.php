@@ -20,6 +20,7 @@ use Reymon\Type\Button\Color;
 use Reymon\Type\Button\KeyboardButton\Location;
 use Reymon\Type\Button\KeyboardButton\Phone;
 use Reymon\Type\Button\KeyboardButton\Poll;
+use Reymon\Type\Button\KeyboardButton\RequestBot;
 use Reymon\Type\Button\KeyboardButton\RequestChannel;
 use Reymon\Type\Button\KeyboardButton\RequestGroup;
 use Reymon\Type\Button\KeyboardButton\RequestUsers;
@@ -151,5 +152,20 @@ abstract class KeyboardButton extends Button
     public static function RequestChannel(string $text, int $buttonId, ?bool $creator = null, ?bool $hasUsername = null, ?bool $member = null, bool $name = false, bool $username = false, bool $photo = false, ?AdministratorRights $userAdminRights = null, ?AdministratorRights $botAdminRights = null, Color $color = Color::NONE, ?int $emojiId = null): KeyboardButton
     {
         return new RequestChannel($text, $buttonId, $creator, $hasUsername, $member, $name, $username, $photo, $userAdminRights, $botAdminRights, $color, $emojiId);
+    }
+
+    /**
+     * Create button for the creation of a managed bot. Information about the created bot will be shared with the bot using the update _managed_bot_ and a [Message](https://core.telegram.org/bots/api#message) with the field _managed_bot_created_.
+     *
+     * @param string  $text     Label text on the button
+     * @param int     $buttonId Signed 32-bit identifier of the request
+     * @param ?string $name     Suggested name for the bot
+     * @param ?string $username Suggested username for the bot
+     * @param Color   $color    Style of the button.
+     * @param ?int    $emojiId  Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on [Fragment](https://fragment.com/) or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription.
+     */
+    public static function RequestBot(string $text, int $buttonId, ?string $name = null, ?string $username = null,Color $color = Color::NONE, ?int $emojiId = null): KeyboardButton
+    {
+        return new RequestBot($text, $buttonId, $name, $username, $color, $emojiId);
     }
 }
