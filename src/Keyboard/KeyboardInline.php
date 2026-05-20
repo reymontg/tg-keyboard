@@ -47,7 +47,7 @@ final class KeyboardInline extends Keyboard
     /**
      * Create inline buttons with callback data.
      */
-    public function addCallbacks(... $rows): self
+    public function addCallbacks(array ... $rows): self
     {
         \array_walk($rows, function ($row) {
             \array_map($this->addCallback(...), \array_keys($row), $row);
@@ -85,7 +85,7 @@ final class KeyboardInline extends Keyboard
     /**
      * Create Inline buttons with url.
      */
-    public function addUrls(... $rows): self
+    public function addUrls(array ... $rows): self
     {
         \array_walk($rows, function ($row) {
             \array_map($this->addUrl(...), \array_keys($row), $row);
@@ -163,7 +163,7 @@ final class KeyboardInline extends Keyboard
     /**
      * Create inline buttons that switches the current user to inline mode in a chat.
      */
-    public function addSwitchInlines(... $rows): self
+    public function addSwitchInlines(array ... $rows): self
     {
         \array_walk($rows, function ($row) {
             \array_map($this->addSwitchInline(...), \array_keys($row), $row);
@@ -185,7 +185,7 @@ final class KeyboardInline extends Keyboard
         return $this->addButton(InlineButton::SwitchInlineCurrent($text, $query, $color, $emojiId));
     }
 
-    public function addSwitchInlinesCurrent(... $rows): self
+    public function addSwitchInlinesCurrent(array ... $rows): self
     {
         \array_walk($rows, function ($row) {
             \array_map($this->addSwitchInlineCurrent(...), \array_keys($row), $row);

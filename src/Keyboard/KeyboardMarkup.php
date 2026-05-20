@@ -94,7 +94,7 @@ final class KeyboardMarkup extends Keyboard
      *
      * @param array ...$buttons
      */
-    public function addTexts(... $buttons): self
+    public function addTexts(array ... $buttons): self
     {
         \array_walk($buttons, function ($row) {
             \array_map($this->addText(...), $row);
