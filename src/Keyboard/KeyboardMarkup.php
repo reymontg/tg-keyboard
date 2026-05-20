@@ -92,7 +92,6 @@ final class KeyboardMarkup extends Keyboard
     /**
      * Create simple texts keyboard.
      *
-     * @param array ...$buttons
      */
     public function addTexts(array ... $buttons): self
     {
