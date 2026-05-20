@@ -67,7 +67,7 @@ final class RequestBot extends RequestButton
         return \array_merge(
             parent::toApi(),
             [
-                'request_managed_bot'  => array_filter_null([
+                'request_managed_bot' => array_filter_null([
                     'request_id'         => $this->buttonId,
                     'suggested_name'     => $this->name,
                     'suggested_username' => $this->username,
@@ -83,7 +83,13 @@ final class RequestBot extends RequestButton
             parent::toMtproto(),
             [
                 '_' => 'inputKeyboardButtonRequest',
-                'button_id' => $this->buttonId, // todo: Wating for madelineproto
+                'button_id' => $this->buttonId,
+                'peer_type' => array_filter_null([
+                    '_' => 'requestPeerTypeCreateBot',
+                    'bot_managed'        => true, // todo check more
+                    'suggested_name'     => $this->name,
+                    'suggested_username' => $this->username,
+                ])
             ],
         );
     }
