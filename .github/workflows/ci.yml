@@ -17,6 +17,9 @@ jobs:
           - operating-system: 'ubuntu-latest'
             php-version: '8.4'
 
+          - operating-system: 'ubuntu-latest'
+            php-version: '8.5'
+
           - operating-system: 'windows-latest'
             php-version: '8.3'
             job-description: 'on Windows'
@@ -25,8 +28,16 @@ jobs:
             php-version: '8.4'
             job-description: 'on Windows'
 
+          - operating-system: 'windows-latest'
+            php-version: '8.5'
+            job-description: 'on Windows'
+
           - operating-system: 'macos-latest'
             php-version: '8.4'
+            job-description: 'on macOS'
+
+          - operating-system: 'macos-latest'
+            php-version: '8.5'
             job-description: 'on macOS'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
