@@ -57,9 +57,9 @@ abstract class Keyboard implements Type, \IteratorAggregate, \Countable
     public function when($value, ?\Closure $callback = null, ?\Closure $default = null): static
     {
         if ($value) {
-            $callback($this, $value);
+            $callback($this);
         } elseif ($default) {
-            $default($this, $value);
+            $default($this);
         }
 
         return $this;
